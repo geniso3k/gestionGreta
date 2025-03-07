@@ -20,6 +20,9 @@
                 <li class="nav-item">
                   <a class="nav-link" href="./?action=connexion">Se connecter</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./?action=enregistrement">S'inscrire</a>
+                </li>
             <?php else: ?>
               
                 <li class="nav-item">

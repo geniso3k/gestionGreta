@@ -7,15 +7,13 @@ class Routeur{
         'defaut' => '../Vue/vue404.html',
         'accueil' => 'CtrlAccueil.php',
         'reservation' => 'CtrlReservation.php',
-        'recherche' => 'CtrlRechercheObjet.php',
         'connexion' => 'CtrlUser.php',     
         'enregistrement' => 'CtrlUser.php',        
         'deconnexion' => 'ctrlUser.php',        
         'location' => 'ctrlLocation.php', 
         'allProduits' => 'ctrlAdminProduit.php',
         'allReservations' => 'ctrlAdminReservation.php',
-        'allUtilisateurs' => 'ctrlAdminUtilisateur.php',
-        'liste' => 'CtrlListeObjets.php');    
+        'allUtilisateurs' => 'ctrlAdminUtilisateur.php');    
     
         
     //Fonction qui retourne le fichier controleur à utiliser
