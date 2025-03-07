@@ -68,15 +68,16 @@
             </div>
         </div>
     </div>
+
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link" href="?page=1" aria-label="Première">
+                <a class="page-link" href="?action=allUtilisateurs&page=1" aria-label="Première">
                     <span aria-hidden="true">&laquo;&laquo;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page=1" aria-label="Précédente">
+                <a class="page-link" href="?action=allUtilisateurs&page=<?= ($currentPage == 1) ? 1 : $currentPage-1 ?>" aria-label="Précédente">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -86,17 +87,18 @@
             <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
                 <a class="page-link" href="?action=allUtilisateurs&page=<?=$i?>"><?=$i?></a>
             </li>
+            
+
             <?php endfor;?>
 
-
-
             <li class="page-item">
-                <a class="page-link" href="?page=2" aria-label="Suivante">
+                <a class="page-link" href="?action=allUtilisateurs&page=<?= ($currentPage == $totalPages) ? $totalPages : $currentPage+1 ?>" aria-label="Suivante">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
+            
             <li class="page-item">
-                <a class="page-link" href="?page=3" aria-label="Dernière">
+                <a class="page-link" href="?action=allUtilisateurs&page=<?=$totalPages?>" aria-label="Dernière">
                     <span aria-hidden="true">&raquo;&raquo;</span>
                 </a>
             </li>

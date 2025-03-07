@@ -2,7 +2,7 @@
 
 class Routeur{
     
-    //Attributs
+  
     private static $lesActions = array(
         'defaut' => '../Vue/vue404.html',
         'accueil' => 'CtrlAccueil.php',
@@ -16,7 +16,7 @@ class Routeur{
         'allUtilisateurs' => 'ctrlAdminUtilisateur.php');    
     
         
-    //Fonction qui retourne le fichier controleur à utiliser
+
     public static function getControleur($action){
    
         $controleur = self::$lesActions["defaut"];
