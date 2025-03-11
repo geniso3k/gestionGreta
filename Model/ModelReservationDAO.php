@@ -82,8 +82,24 @@ class ModelReservationDAO{
         }
     }
 
+    public static function getStockID($id){
+        $req = ConnexionDB::getInstance()->prepare("SELECT quantite, id_equip AS id FROM emprunts WHERE id_emprunt =?");
+        $req -> execute(array($id));
+        while($row = $req->fetch(PDO::FETCH_ASSOC)){
+            return [$row['id'], $row['quantite']];
+        }
+    }
+
     public static function supprimerReservation($id){
         try{
+
+            $req = ConnexionDB::getInstance()->prepare("SELECT stock FROM equipement where id = ?");
+            $req->execute(array(SELF::getStockID($id)[0]));
+            while($row = $req->fetch(PDO::FETCH_ASSOC)){
+                $stock = $row['stock'];
+            }
+            $stock += SELF::getStockID($id)[1]; 
+            ModelEquipementDAO::modifierStock(SELF::getStockID($id)[0], $stock, "notnull");
 
             $req = ConnexionDB::getInstance()->prepare("DELETE FROM emprunts WHERE id_emprunt = ?");
             $result = $req ->execute(array($id));

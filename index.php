@@ -9,7 +9,7 @@
     //Récupération de l'action à exécuter dans l'URL en méthode GET
     $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
     if (!isset($action)){
-        $action = "defaut";
+        $action = "accueil";
     }
 
     //Appel au routeur pour récupérer le controleur à appeler

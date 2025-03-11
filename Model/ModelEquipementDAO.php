@@ -16,7 +16,15 @@ class ModelEquipementDAO {
              while ($ligne = $req->fetch(PDO::FETCH_ASSOC)) {
 
                
-                $unObjet = new Equipement($ligne['id'], $ligne['libelle'], $ligne['prix'], $ligne['stock'], ModelCategorieDAO::getCategorie($ligne['catégorie']));
+                $unObjet = new Equipement(
+                    $ligne['id'],
+                    $ligne['libelle'], 
+                    $ligne['prix'], 
+                    $ligne['stock'], 
+                    ModelCategorieDAO::getCategorie($ligne['catégorie']), 
+                    $ligne['description']
+                );
+
                 $resultat[] = $unObjet;
             }     
             return $resultat;      
@@ -34,7 +42,7 @@ class ModelEquipementDAO {
 
             //une seule ligne de résultat traitée comme s'il y en avait plusieurs (pour harmoniser la vue résultat)
             while ($ligne = $req->fetch(PDO::FETCH_ASSOC)) {
-                $unEquipement = new Equipement($ligne['id'], $ligne['libelle'], $ligne['prix'], $ligne['stock']);
+                $unEquipement = new Equipement($ligne['id'], $ligne['libelle'], $ligne['prix'], $ligne['stock'], null, $ligne['description']);
             }            
             return $unEquipement;
 
@@ -47,7 +55,7 @@ class ModelEquipementDAO {
 
     
 
-    public static function modifierStock($id, $qtt){
+    public static function modifierStock($id, $qtt , $status = null){
 
         try{
             $req = ConnexionDB::getInstance()->prepare("SELECT stock FROM equipement WHERE id = ?");
@@ -55,11 +63,17 @@ class ModelEquipementDAO {
             $row = $req->fetch(PDO::FETCH_ASSOC);
             $stock = $row['stock'];
 
+            if($status !== null){
+
+                $resultat = $qtt;
+
+            }else{
             $resultat = $stock - $qtt;
+            }
             if($resultat < 0){
                 return false;
             }
-
+            
             $req = ConnexionDB::getInstance()->prepare("UPDATE equipement SET stock = ? WHERE id = ?");
             $result = $req -> execute(array($resultat, $id));
 
@@ -75,13 +89,13 @@ class ModelEquipementDAO {
         }
     }
 
-    public static function modifierAll($id, string $nom,$prix,$stock){
+    public static function modifierAll($id, string $nom,$prix,$stock, $desc){
 
         try{
 
             
-            $req = ConnexionDB::getInstance() ->prepare("UPDATE equipement SET libelle = ?, prix = ?, stock = ? WHERE id = ?");
-            $result = $req -> execute(array($nom,$prix,$stock,$id));
+            $req = ConnexionDB::getInstance() ->prepare("UPDATE equipement SET libelle = ?, prix = ?, stock = ?, description = ? WHERE id = ?");
+            $result = $req -> execute(array($nom,$prix,$stock,$desc,$id));
 
             if($result){
                 return true;
@@ -97,11 +111,11 @@ class ModelEquipementDAO {
 
     }
 
-    public static function ajouterProduit($categorie, $nom, $prix, $stock){
+    public static function ajouterProduit($categorie, $nom, $prix, $stock, $desc){
 
         try{
-            $req = ConnexionDB::getInstance()->prepare("INSERT INTO equipement (catégorie, libelle, prix, stock) VALUES (?,?,?,?)");
-            $result = $req -> execute(array($categorie, $nom, $prix, $stock));
+            $req = ConnexionDB::getInstance()->prepare("INSERT INTO equipement (catégorie, libelle, prix, stock, description) VALUES (?,?,?,?, ?)");
+            $result = $req -> execute(array($categorie, $nom, $prix, $stock, $desc));
 
             if($result){
                 return true;
@@ -132,7 +146,14 @@ class ModelEquipementDAO {
             die();
         }
 
+    }
 
+    public static function getDescription($id){
+        $req = ConnexionDB::getInstance()->prepare("SELECT description FROM equipement WHERE id = ?");
+        $req -> execute(array($id));
+        while($row = $req->fetch()){
+            return $row['description'];
+        }
 
     }
 

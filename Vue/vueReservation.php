@@ -92,7 +92,23 @@ p {
 
         <?php $equipement = ModelEquipementDAO::findById($reservation->getIdEquip()); ?>
 
+        <?php 
+        $time = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+
+
+        $reservationEndDate = DateTime::createFromFormat('Y-m-d', $reservation->getDateFin());
+        $interval = null;
         
+        if ($reservationEndDate < $time) {
+            $interval = $reservationEndDate->diff($time);
+            $cout = $interval->days * ($reservation->getPrix()) * 0.25;
+            $datefin = '<b style="color:red;">'. $reservation->getDateFin() . '</b>';
+        }else{
+            $datefin = $reservation ->getDateFin();
+        }
+        
+        
+        ?>
 
             <div class="defaut">
 
@@ -101,7 +117,8 @@ p {
                 <div class="enfant">
                     <h1><?php echo $equipement->getLibelle(); ?></h1>
                     <p>Date de réservation : <?php echo $reservation->getDateDebut(); ?></p>
-                    <p>A rendre impérativement le : <?=$reservation->getDateFin();?></p>
+                    <p>A rendre <u>impérativement</u> le : <b><?=$datefin;?></b></p>
+                    <?php if(isset($interval)){ echo '<p>Frais de retard : <b style="color:red;">'.$cout.'€ ('.$interval->days.' jours)</b></p>';} ?>
                     <p>Quantité empruntée : x<?php echo $reservation->getQuantite(); ?></p>
                     <p>Prix réglé : <?php echo $reservation->getPrix(); ?>€</p>
                     

@@ -101,16 +101,10 @@ class ModelConnDAO{
     }
 
     public static function getRoleNom($id){
-        switch($id){
-            case 1:
-                return "Admin";
-                break;
-            case 2:
-                return "Commercial";
-                break;
-            case 3:
-                return "Client";
-                break;
+        $sql = ConnexionDB::getInstance()->prepare("SELECT libelle FROM role where id = ?");
+        $sql -> execute(array($id));
+        while($row = $sql->fetch()){
+            return $row['libelle'];
         }
     }
 

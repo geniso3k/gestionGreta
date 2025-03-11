@@ -87,9 +87,12 @@
                 <option>5</option> 
             </select>
         </div>
+        <h4>Description :</h4><p> </br>
+        <?=$modele->getDescription();?>
+</p>
         <div class="form-group">
             <input type="checkbox" id="consentement" name="consentement" required />
-            <label for="consentement">J'accepte de rendre le produit dans les temps et en état</label>
+            <label for="consentement">J'accepte de rendre le produit dans les temps et en état. Chaque jour de retard entrainera des frais de 25% du prix unitaire.</label>
         </div>
         <h1><div  id="prix"></div></h1>
         <button type="submit" class="valider btn btn-success">Valider</button>

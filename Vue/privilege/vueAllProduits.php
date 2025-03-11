@@ -85,6 +85,7 @@
             <input type="text" name="nom" class="form-control" placeholder="Nom du produit" required>
             <input type="number" step="0.01" name="prix" class="form-control" placeholder="Prix" required>
             <input type="number" name="stock" class="form-control" placeholder="Stock" required>
+            <textarea name="desc" class="form-control" placeholder="Description détaillée" required>Description détaillée</textarea>
             <button type="submit" class="btn btn-primary mt-3" name="ajouter">Ajouter</button>
         </form>
     </div>
@@ -100,6 +101,7 @@
                     <th>Nom</th>
                     <th>Prix journalier</th>
                     <th>Stock</th>
+                    <th>Description</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -113,8 +115,9 @@
                     <td><?=$equip->getLibelle(); ?></td>
                     <td>€<?=$equip->getPrix();?></td>
                     <td><?=$equip->getStock();?></td>
+                    <td><?=$equip->getDescription()?></td>
                     <td>
-                        <a href="#" data-toggle="modal" data-target="#editModal" data-id="<?=$equip->getCode();?>" data-nom="<?=$equip->getLibelle();?>" data-prix="<?=$equip->getPrix();?>" data-stock="<?=$equip->getStock();?>">Modifier</a> |
+                        <a href="#" data-toggle="modal" data-target="#editModal" data-id="<?=$equip->getCode();?>" data-desc="<?=$equip->getDescription()?>" data-nom="<?=$equip->getLibelle();?>" data-prix="<?=$equip->getPrix();?>" data-stock="<?=$equip->getStock();?>">Modifier</a> |
                         <a  class="delete-btn" href="./?action=allProduits&supprimer=<?=$equip->getCode();?>" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?=$equip->getCode();?>">Supprimer</a>
                     </td>
                 </tr>
@@ -164,6 +167,7 @@
                     <input type="text" name="nom" id="productName" class="form-control" placeholder="Nom du produit" required>
                     <input type="number" name="prix" id="productPrice" step="0.01" class="form-control" placeholder="Prix" required>
                     <input type="number" name="stock" id="productStock" class="form-control" placeholder="Stock" required>
+                    <textarea  name="desc" id="productDesc" class="form-control" placeholder="Description" required></textarea>
                     <button type="submit" class="btn btn-primary mt-3" name="modifier">Modifier</button>
                 </form>
             </div>
@@ -184,12 +188,14 @@
         var nom = button.data('nom');
         var prix = button.data('prix');
         var stock = button.data('stock');
+        var desc = button.data('desc');
 
         var modal = $(this);
         modal.find('#productId').val(id);
         modal.find('#productName').val(nom);
         modal.find('#productPrice').val(prix);
         modal.find('#productStock').val(stock);
+        modal.find('#productDesc').val(desc);
     });
 
     // Lorsque l'utilisateur clique sur "Supprimer", ouvrir le modal de confirmation

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 07 mars 2025 à 10:29
+-- Généré le : mar. 11 mars 2025 à 12:11
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -55,15 +55,6 @@ CREATE TABLE `emprunts` (
   `prix` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `emprunts`
---
-
-INSERT INTO `emprunts` (`id_emprunt`, `id_equip`, `id_user`, `quantite`, `dateDebut`, `dateFin`, `prix`) VALUES
-(28, 2, 18, 1, '2025-03-08', '2025-03-11', 77.88),
-(29, 2, 19, 1, '2025-03-06', '2025-03-21', 194.7),
-(30, 1, 18, 3, '2025-03-07', '2025-03-22', 1257.75);
-
 -- --------------------------------------------------------
 
 --
@@ -74,6 +65,7 @@ CREATE TABLE `equipement` (
   `id` int(11) NOT NULL,
   `catégorie` int(11) NOT NULL,
   `libelle` varchar(50) NOT NULL,
+  `description` varchar(255) NOT NULL,
   `stock` int(11) NOT NULL,
   `prix` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -82,9 +74,12 @@ CREATE TABLE `equipement` (
 -- Déchargement des données de la table `equipement`
 --
 
-INSERT INTO `equipement` (`id`, `catégorie`, `libelle`, `stock`, `prix`) VALUES
-(1, 1, 'Tour', 97, 27.95),
-(2, 1, 'Clavier', 3, 12.98);
+INSERT INTO `equipement` (`id`, `catégorie`, `libelle`, `description`, `stock`, `prix`) VALUES
+(1, 1, 'Tour', 'Processeur : Intel Core i5-6500 3.20 GHz</br>Mémoire : 16 GB RAM</br>Stockage : 240 GB SSD</br>Carte graphique : Intel HD 530</br>Système d\'exploitation : Windows 10', 95, 27.95),
+(2, 1, 'Clavier', 'Clavier d&#39;ordinateurr', 13, 3.99),
+(11, 1, 'Souris', 'Razer Basilisk V3 Pro 35K - Souris de Jeu Ergonomique sans Fil entièrement Personnalisable avec Chroma RGB', 20, 5.95),
+(12, 1, 'Moniteur', 'Écran PC Incurvé | 39,7', 256, 24.95),
+(14, 1, 'PC Gamer Vengeance - i9 - RTX 4060', 'PC Gamer Vengeance - i9 - RTX 4060', 6, 89.99);
 
 -- --------------------------------------------------------
 
@@ -205,8 +200,7 @@ INSERT INTO `utilisateur` (`id`, `nom`, `prenom`, `email`, `password`, `role`) V
 (98, 'Nom78', 'Prenom78', 'utilisateur78@exemple.com', '$2y$10$7N0p1UkrjzATM3ON6rIUDuwzTMw0c.LweTNHLhcihOmgc9erMFDhe', 3),
 (99, 'Nom79', 'Prenom79', 'utilisateur79@exemple.com', '$2y$10$h8NmBa3GOVi.gLWWCqeatuVOa2kJbYGtQmHcmsT5hRDTRLQmcQHSi', 3),
 (100, 'Nom80', 'Prenom80', 'utilisateur80@exemple.com', '$2y$10$tQGw83TzyTrkQW41Xw4EOuX4.z2sch8viff1jS4kWhM/QFmnrW3PO', 3),
-(101, 'Nom81', 'Prenom81', 'utilisateur81@exemple.com', '$2y$10$sAm/RY4h7ozCX2mWtrcrA.fTtrbkwwt4Vw6KUDeXCDM9zGaBtiYYi', 3),
-(102, 'Nom82', 'Prenom82', 'utilisateur82@exemple.com', '$2y$10$1uUkpyzfAtr4vlf4HFBisurJ9jGlJXIzJJG2J/wnhS/1Njac9W.rm', 3);
+(101, 'Nom81', 'Prenom81', 'utilisateur81@exemple.com', '$2y$10$sAm/RY4h7ozCX2mWtrcrA.fTtrbkwwt4Vw6KUDeXCDM9zGaBtiYYi', 3);
 
 --
 -- Index pour les tables déchargées
@@ -260,13 +254,13 @@ ALTER TABLE `categorie`
 -- AUTO_INCREMENT pour la table `emprunts`
 --
 ALTER TABLE `emprunts`
-  MODIFY `id_emprunt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_emprunt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT pour la table `equipement`
 --
 ALTER TABLE `equipement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT pour la table `role`

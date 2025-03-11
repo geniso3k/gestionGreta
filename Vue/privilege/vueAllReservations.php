@@ -92,6 +92,7 @@
                     <th>Date de début</th>
                     <th>Date de fin</th>
                     <th>Prix réglé</th>
+                    <th>Eventuels frais</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -103,11 +104,30 @@
                     <td><?=ModelConnDAO::getClientNom($reservation->getIdUser());?></td>
                     <td><?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?></td>
                     <td><?=$reservation->getDateDebut(); ?></td>
-                    <td><?=$reservation->getDateFin(); ?></td>
+                    <td><?php 
+
+$time = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+
+
+$reservationEndDate = DateTime::createFromFormat('Y-m-d', $reservation->getDateFin());
+$interval = null;
+
+if ($reservationEndDate < $time) {
+    $interval = $reservationEndDate->diff($time);
+    $cout = $interval->days * ($reservation->getPrix()) * 0.25;
+
+    echo '<b style="color:red;">'. $reservation->getDateFin() . '</b>';
+}else{
+    echo $reservation->getDateFin();
+}
+
+                    
+                    ?></td>
                     <td>€<?=$reservation->getPrix(); ?></td>
+                    <td><?php if(isset($interval)){ echo'Frais de retard : '.$cout.'€ ('.$interval->days.' jours)';}else{ echo '0€';} ?></td>
                     <td>
                         <a href="#" data-toggle="modal" data-target="#editModal" data-id="<?=$reservation->getIdEmprunt();?>" data-client="<?=ModelConnDAO::getClientNom($reservation->getIdUser());?>" data-product="<?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?>" data-start="<?=$reservation->getDateDebut();?>" data-end="<?=$reservation->getDateFin();?>">Modifier</a> |
-                        <a class="delete-btn" href="./?action=allReservations&supprimer=<?=$reservation->getIdEmprunt();?>" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?=$reservation->getIdEmprunt();?>">Supprimer</a>
+                        <a class="delete-btn" href="./?action=allReservations&supprimer=<?=$reservation->getIdEmprunt();?>" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?=$reservation->getIdEmprunt();?>">Rendu</a>
                     </td>
                 </tr>
                     <?php endforeach; ?>

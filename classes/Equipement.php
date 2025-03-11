@@ -6,15 +6,17 @@ class Equipement {
     private ?string $categorie ;
     private ?string $stock ;
     private ?string $prix;
+    private ?string $desc;
 
  
         //Constructeur
-        function __construct(string $code, string $libelle, string $p = null, string $s = null, string $c = null){
+        function __construct(string $code, string $libelle, string $p = null, string $s = null, string $c = null, $d = null){
             $this->code = $code;
             $this->libelle = $libelle;
             $this->categorie = $c;
             $this ->stock = $s;
             $this ->prix = $p;
+            $this ->desc = $d;
         }  
     
     public function getLibelle(){
@@ -31,5 +33,8 @@ class Equipement {
     }
     public function getPrix(){
         return $this->prix;
+    }
+    public function getDescription(){
+        return $this->desc;
     }
 }

@@ -22,9 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
         $prix = filter_input(INPUT_POST, 'prix', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $stock = filter_input(INPUT_POST, 'stock', FILTER_SANITIZE_NUMBER_INT);
+        $desc = filter_input(INPUT_POST, 'desc', FILTER_SANITIZE_STRING);
 
   
-        if (empty($categorieId) || empty($nom) || empty($prix) || empty($stock)) {
+        if (empty($categorieId) || empty($nom) || empty($prix) || empty($stock) || empty($desc)) {
             echo '<div class="alert alert-danger" role="alert">Tous les champs sont requis.</div>';
         } elseif (!is_numeric($prix) || $prix <= 0) {
             echo '<div class="alert alert-danger" role="alert">Le prix doit être un nombre positif.</div>';
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
 
 
-            $result = ModelEquipementDAO::ajouterProduit($categorieId, $nom, $prix, $stock);
+            $result = ModelEquipementDAO::ajouterProduit($categorieId, $nom, $prix, $stock, $desc);
 
             // Vérifier si l'ajout a réussi
             if ($result) {
@@ -57,9 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
         $prix = filter_input(INPUT_POST, 'prix', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $stock = filter_input(INPUT_POST, 'stock', FILTER_SANITIZE_NUMBER_INT);
+        $desc = filter_input(INPUT_POST, 'desc', FILTER_SANITIZE_STRING);
 
+        var_dump($_POST);
         // Validation des données
-        if (empty($id) || empty($nom) || empty($prix) || empty($stock)) {
+        if (empty($id) || empty($nom) || empty($prix) || empty($desc)) {
             echo '<div class="alert alert-danger" role="alert">Tous les champs sont requis.</div>';
         } elseif (!is_numeric($prix) || $prix <= 0) {
             echo '<div class="alert alert-danger" role="alert">Le prix doit être un nombre positif.</div>';
@@ -69,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-            $result = ModelEquipementDAO::modifierAll($id, $nom, $prix, $stock);
+            $result = ModelEquipementDAO::modifierAll($id, $nom, $prix, $stock, $desc);
 
             // Vérifier si la modification a réussi
             if ($result) {

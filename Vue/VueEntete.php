@@ -6,12 +6,14 @@
 
     </head>
 <body>
-<nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-dark" style="background-color: black;">
              <a class="navbar-brand" href="./?action=accueil">Accueil</a>
              
-             <div class="navbar-brand">Gestionnaire de stocks pour location</div>
+             <div class="navbar-brand">Location de matériel informatique</div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+</svg>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarsExample01">
