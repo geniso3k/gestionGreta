@@ -27,8 +27,7 @@ class ModelReservationDAO{
                     $ligne['id_user'],
                     $ligne['dateDebut'],
                     $ligne['dateFin'],
-                    $ligne['prix'],
-                    $ligne['quantite']
+                    $ligne['signature']
                 );
                 $resultat[] = $unObjet;
             }
@@ -58,12 +57,12 @@ class ModelReservationDAO{
 
     }
 
-    public static function ajouterLocation(Equipement $e, string $user_id, string $datefin, string $datedebut, int $qtt, float $prix){
+    public static function ajouterLocation(Equipement $e, string $user_id, string $datefin, string $datedebut, string $signature){
 
         try{
-            $req = ConnexionDB::getInstance()->prepare("INSERT INTO emprunts (id_equip, id_user, dateDebut, dateFin, prix, quantite) VALUES (?, ?, ?, ?, ?, ?)");
-            if(ModelEquipementDAO::modifierStock($e->getCode(), $qtt)){
-            $result = $req -> execute(array($e->getCode(), $user_id, $datedebut, $datefin, $prix, $qtt));
+            $req = ConnexionDB::getInstance()->prepare("INSERT INTO emprunts (id_equip, id_user, dateDebut, dateFin, signature) VALUES ( ?, ?, ?, ?, ?)");
+            
+            $result = $req -> execute(array($e->getCode(), $user_id, $datedebut, $datefin, $signature));
             
                 if($result){
                     return true;
@@ -71,10 +70,7 @@ class ModelReservationDAO{
                     return false;
                 }
             
-            }else{
-                echo "<div class='alert alert-danger'>Le produit n'a pas assez de stock.</div>";
-                return false;
-            }
+          
 
         }catch(PDOException $ex){
             print "Erreur : ". $ex->getMessage();
@@ -83,23 +79,26 @@ class ModelReservationDAO{
     }
 
     public static function getStockID($id){
-        $req = ConnexionDB::getInstance()->prepare("SELECT quantite, id_equip AS id FROM emprunts WHERE id_emprunt =?");
+        $req = ConnexionDB::getInstance()->prepare("SELECT id_equip AS id FROM emprunts WHERE id_emprunt =?");
         $req -> execute(array($id));
         while($row = $req->fetch(PDO::FETCH_ASSOC)){
-            return [$row['id'], $row['quantite']];
+            return [$row['id']];
         }
+    }
+    public static function reservationExist($idEquip){
+        $req = ConnexionDB::getInstance()->prepare("
+        SELECT id_emprunt 
+        FROM emprunts 
+        WHERE id_equip = ?
+        ");
+        $req->execute(array($idEquip));
+
+        return $req->rowCount()>0 ? true : false;
+
     }
 
     public static function supprimerReservation($id){
         try{
-
-            $req = ConnexionDB::getInstance()->prepare("SELECT stock FROM equipement where id = ?");
-            $req->execute(array(SELF::getStockID($id)[0]));
-            while($row = $req->fetch(PDO::FETCH_ASSOC)){
-                $stock = $row['stock'];
-            }
-            $stock += SELF::getStockID($id)[1]; 
-            ModelEquipementDAO::modifierStock(SELF::getStockID($id)[0], $stock, "notnull");
 
             $req = ConnexionDB::getInstance()->prepare("DELETE FROM emprunts WHERE id_emprunt = ?");
             $result = $req ->execute(array($id));
@@ -159,6 +158,30 @@ class ModelReservationDAO{
 
 
     }
+    public static function envoieMail($email, $idEmprunt, $equip, $dateFin) {
+
+
+
+        $to = $email;
+        $subject = "Retour de votre réservation Nr: $idEmprunt";
+
+        ob_start();  
+        include_once("vue/vueEmail.php");  
+        $message = ob_get_clean();  
+        
+
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-Type: text/html; charset=UTF-8" . "\r\n";
+        $headers .= "From: si@greta-alsace-sud.com" . "\r\n";
+        $headers .= "Reply-To: si@greta-alsace-sud.com" . "\r\n";
+
+        if(mail($to, $subject, $message, $headers)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 
 
 }

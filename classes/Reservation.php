@@ -6,21 +6,24 @@ class Reservation {
     private string $id_user;
     private string $dateDebut;
     private string $dateFin;
-    private float $prix;
-    private int $quantite;
+    private string $signature;
+
 
     // Constructeur
-    public function __construct(string $id_emprunt, string $id_equip, string $id_user, string $dateDebut, string $dateFin, float $prix, int $quantite) {
+    public function __construct(string $id_emprunt, string $id_equip, string $id_user, string $dateDebut, string $dateFin, string $signature) {
         $this->id_emprunt = $id_emprunt;
         $this->id_equip = $id_equip;
         $this->id_user = $id_user;
         $this->dateDebut = $dateDebut;
         $this->dateFin = $dateFin;
-        $this->prix = $prix;
-        $this ->quantite = $quantite;
+        $this->signature = $signature;
+
         
     }
 
+    public function getSignature(){
+        return $this->signature;
+    }
     // Getter pour id_emprunt
     public function getIdEmprunt(): string {
         return $this->id_emprunt;
@@ -46,13 +49,6 @@ class Reservation {
         return $this->dateFin;
     }
 
-    // Getter pour prix
-    public function getPrix(): float {
-        return $this->prix;
-    }
-    // Getter pour quantite
-    public function getQuantite(): int {
-        return $this->quantite;
-    }
+
 }
 ?>

@@ -33,6 +33,7 @@ class ModelConnDAO{
             $hashMDP = $row['password'];
 
             if(password_verify($pass, $hashMDP)){
+
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['email'] = $row['email'];
                 $_SESSION['role'] = $row['role'];

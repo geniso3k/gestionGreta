@@ -2,6 +2,8 @@
 include_once("Model/ModelEquipementDAO.php");
 include_once("Model/ModelReservationDAO.php");
 include_once("vue/vueEntete.php");
+include_once("Model/ModelConnDAO.php");
+
 if(isset($_SESSION['email'])){
 
     $ida = filter_var($_GET['article'], FILTER_VALIDATE_INT);
@@ -12,13 +14,13 @@ if(isset($_SESSION['email'])){
  
         
         $email = filter_var($_SESSION['email'], FILTER_VALIDATE_EMAIL);
-        $qtt = filter_var($_POST['qtt'], FILTER_VALIDATE_INT);
         $datepicker = filter_var($_POST['datepicker'], FILTER_SANITIZE_STRING); 
 
 
 
         $dttime = time();
-        $dateaujd = date("Y-m-d", $dttime);
+        $dateaujd = DateTime::createFromFormat("U", $dttime);
+
 
         $datepicker = DateTime::createFromFormat('Y-m-d', $_POST['datepicker']);
         if ($datepicker === false || $datepicker->format('Y-m-d') !== $_POST['datepicker']) {
@@ -26,26 +28,55 @@ if(isset($_SESSION['email'])){
             die();
             
         }
-        
+       
         if($dateaujd < $datepicker){
 
             if( isset($_POST['consentement']) && $_POST['consentement'] == "on"){
 
-                if(isset($_POST['qtt']) && $_POST['qtt'] > 0){
+                if(isset($_FILES['signature']) && $_FILES['signature']['error'] == 0){
+                    $fileTmpPath = $_FILES['signature']['tmp_name'];
+                    $fileName = $_FILES['signature']['name'];
+                    $fileSize = $_FILES['signature']['size'];
+                    $fileType = $_FILES['signature']['type'];
+                    $uploadDir = './img/signatures/';
+
+                    $newFileName = uniqid('signature_') . '.png';
+                    $uploadFilePath = $uploadDir . $newFileName;
 
 
-                    $location = ModelReservationDAO::ajouterLocation($modele, $_SESSION['user_id'], $_POST['datepicker'], $dateaujd,$_POST['qtt'], $_POST['prix']);
-                    if($location){
-                        header("Location: ./?action=accueil&alert=succes");
-                        die();
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0777, true);
                     }
 
 
+                    if (move_uploaded_file($fileTmpPath, $uploadFilePath)) {
+                        
+
+                        $location = ModelReservationDAO::ajouterLocation($modele, $_SESSION['user_id'], $_POST['datepicker'], $dateaujd->format("Y-m-d"), $newFileName);
+                        if($location){
+                            header("Location: ./?action=accueil&alert=succes");
+                            die();
+                        }
+
+
+
+
+                    } else {
+                        echo "<div class='alert alert-danger'>La signature n'a pas été enregistré correctement.</div>";
+                    }
+
+
+
+
+
+
+
+                    
                 }else{
-
-                    echo "<div class='alert alert-danger'>La quantité est incorrecte !</div>";
-
+                    echo "<div class='alert alert-danger'>La signature n'a pas été enregistré correctement.</div>";
                 }
+
+               
 
             }else{
                 echo "<div class='alert alert-danger'>Veuillez cocher la case !</div>";

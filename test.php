@@ -1,50 +1,63 @@
-<?php
-// Connexion à la base de données
-$servername = "localhost";
-$username = "root"; // Remplacez par votre utilisateur DB
-$password = ""; // Remplacez par votre mot de passe DB
-$dbname = "gretageniss"; // Nom de la base de données
+<?php 
 
-// Créer la connexion
-$conn = new mysqli($servername, $username, $password, $dbname);
+/*
+require 'classes/PHPMailer/src/Exception.php';
+require 'classes/PHPMailer/src/PHPMailer.php';
+require 'classes/PHPMailer/src/SMTP.php';
 
-// Vérifier la connexion
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+$mail = new PHPMailer(true);
+
+try {
+    
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';  
+    $mail->SMTPAuth = true;
+    $mail->Username = 'si@greta-alsace-sud.com';  
+    $mail->Password = 'GretColm68!?';      
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  
+    $mail->Port = 587; 
+
+
+    $mail->setFrom('si@greta-alsace-sud.com', 'Nom');
+    $mail->addAddress('prishtinalik@hotmail.fr', 'Nom du destinataire'); 
+
+
+    $mail->Subject = 'Test';
+    $mail->Body    = 'Ceci est un test';
+    $mail->SMTPDebug = 2;
+
+    if ($mail->send()) {
+        echo 'Message envoyé avec succès';
+    } else {
+        echo 'Erreur lors de l\'envoi du message: ' . $mail->ErrorInfo;
+    }
+} catch (Exception $e) {
+    echo 'Le message n\'a pas pu être envoyé. Erreur : ', $mail->ErrorInfo;
 }
+*/
 
-// Nombre d'utilisateurs à générer (entre 50 et 100)
-$num_users = rand(50, 100);
 
-// Préparer une requête SQL pour insérer un utilisateur
-$stmt = $conn->prepare("INSERT INTO utilisateur (nom, prenom, email, password, role) VALUES (?, ?, ?, ?, ?)");
+$to = "destinataire@example.com";
+$subject = "Test Email";
+$message = "Ceci est un test d'envoi d'email.";
+$headers = "From: expéditeur@example.com";
 
-// Vérifier si la préparation de la requête est réussie
-if ($stmt === false) {
-    die("Erreur de préparation de la requête: " . $conn->error);
-}
+if (mail($to, $subject, $message, $headers)) {
+    echo "L'email a été envoyé avec succès.";
+} else {
+    echo "L'envoi de l'email a échoué.<br>";
 
-// Générer les utilisateurs
-for ($i = 1; $i <= $num_users; $i++) {
-    // Générer des données aléatoires pour chaque utilisateur
-    $nom = "Nom" . $i;
-    $prenom = "Prenom" . $i;
-    $email = "utilisateur" . $i . "@exemple.com";
-    $password = password_hash("password" . $i, PASSWORD_BCRYPT); // Générer un mot de passe sécurisé
-    $role = 3;
-
-    // Lier les paramètres à la requête préparée
-    $stmt->bind_param("ssssi", $nom, $prenom, $email, $password, $role);
-
-    // Exécuter la requête
-    if (!$stmt->execute()) {
-        echo "Erreur lors de l'insertion de l'utilisateur $i: " . $stmt->error . "<br>";
+    // Récupération des erreurs PHP
+    $error = error_get_last();
+    if ($error) {
+        echo "Erreur PHP : " . $error['message'];
+    } else {
+        echo "Aucune erreur PHP détaillée disponible.";
     }
 }
 
-echo "$num_users utilisateurs générés avec succès !";
-
-// Fermer la connexion
-$stmt->close();
-$conn->close();
 ?>

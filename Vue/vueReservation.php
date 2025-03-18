@@ -100,8 +100,10 @@ p {
         $interval = null;
         
         if ($reservationEndDate < $time) {
-            $interval = $reservationEndDate->diff($time);
-            $cout = $interval->days * ($reservation->getPrix()) * 0.25;
+            if(!ModelReservationDAO::envoieMail($_SESSION['email'], $reservation->getIdEmprunt(),$equipement->getLibelle(), $reservationEndDate)){
+                echo'erreur';
+            }
+            
             $datefin = '<b style="color:red;">'. $reservation->getDateFin() . '</b>';
         }else{
             $datefin = $reservation ->getDateFin();
@@ -117,10 +119,7 @@ p {
                 <div class="enfant">
                     <h1><?php echo $equipement->getLibelle(); ?></h1>
                     <p>Date de réservation : <?php echo $reservation->getDateDebut(); ?></p>
-                    <p>A rendre <u>impérativement</u> le : <b><?=$datefin;?></b></p>
-                    <?php if(isset($interval)){ echo '<p>Frais de retard : <b style="color:red;">'.$cout.'€ ('.$interval->days.' jours)</b></p>';} ?>
-                    <p>Quantité empruntée : x<?php echo $reservation->getQuantite(); ?></p>
-                    <p>Prix réglé : <?php echo $reservation->getPrix(); ?>€</p>
+                    <p>A rendre <u>impérativement</u> le : </br><b><?=$datefin;?></b></p>
                     
                 </div>
             </div>

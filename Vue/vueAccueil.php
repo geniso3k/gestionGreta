@@ -119,7 +119,7 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
     .ensemble {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 
     .equip {
@@ -158,27 +158,23 @@ body {
 <div class="ensemble">
     <div class="equip">
         <?php for($i = 0; $i < count($resultat); $i++): ?>
-            <?php if($resultat[$i]->getStock() > 0): ?>
                 <div class="defaut">
                     <img class="photo" src="<?php echo "./img/".$resultat[$i]->getCode(); ?>.jpg" alt="img" />
                     <div class="enfant">
                         <h1><?=$resultat[$i]->getLibelle()?></h1>
-                        <p>Stock : x<?=$resultat[$i]->getStock()?></p>
                         <div class="prix">
                         <a href="./?action=location&article=<?=$resultat[$i]->getCode()?>" class="btn">Louer</a>
-                        <p><?=$resultat[$i]->getPrix()?>€/jour </p>
                         </div>
                     </div>
                 </div>
-            <?php endif; ?>
         <?php endfor ?>
     </div>
 
     <div class="description">
         <img class="img-fluid" src="./img/commercial.jpg" alt="Commercial" />
         <h2>Bienvenue sur notre site !</h2>
-        <p>Nous proposons une large sélection d'articles à louer. Que vous soyez un professionnel ou un particulier, nous avons ce qu'il vous faut pour répondre à vos besoins.</p>
-        <p>Notre objectif est de faciliter l'accès à des équipements de qualité sans avoir à investir dans l'achat de matériel coûteux. Grâce à notre plateforme simple et intuitive, vous pouvez facilement louer des articles pour des périodes flexibles et à des prix compétitifs.</p>
+        <p>Nous proposons une large sélection d'équipements à louer. Nous avons ce qu'il vous faut pour répondre à vos besoins.</p>
+        <p>Notre objectif est de faciliter l'accès à des équipements de qualité. Grâce à notre plateforme simple et intuitive, vous pouvez facilement louer des articles pour des périodes flexibles.</p>
         <p>Faites confiance à notre service pour une expérience de location rapide et efficace, et profitez de notre stock toujours à jour pour trouver l'article dont vous avez besoin.</p>
     </div>
 </div>
