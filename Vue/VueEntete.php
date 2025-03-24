@@ -39,6 +39,9 @@
                   <a class="nav-link" href="./?action=allProduits">Produits</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="./?action=allLieu">Lieux</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="./?action=allReservations">Réservations</a>
                 </li>
                 <?php endif;?>

@@ -13,6 +13,7 @@ class Routeur{
         'location' => 'ctrlLocation.php', 
         'allProduits' => 'ctrlAdminProduit.php',
         'allReservations' => 'ctrlAdminReservation.php',
+        'allLieu' => 'ctrlAdminLieu.php',
         'allUtilisateurs' => 'ctrlAdminUtilisateur.php');    
     
         

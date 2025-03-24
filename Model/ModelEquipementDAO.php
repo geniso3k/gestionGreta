@@ -144,9 +144,11 @@ class ModelEquipementDAO {
 
             $req = ConnexionDB::getInstance()->prepare("DELETE FROM equipement WHERE id = ?");
             $result = $req ->execute(array($id));
+            $chemin = "./img/".$id.".jpg";
+ 
 
             if($result){
-                return true;
+                return unlink($chemin) ? true:false;
             }else{
                 return false;
             }
