@@ -5,16 +5,18 @@ include_once("Model/ModelEquipementDAO.php");
 
 class ModelReservationDAO{
 
-    public static function getAllReservation($id = null) {
+    public static function getAllReservation($id = null, $rendu = 0) {
         try {
-            // Si un ID est fourni, on filtre les réservations par utilisateur
+
+
+
             if ($id !== null) {
-                $req = ConnexionDB::getInstance()->prepare("SELECT * FROM emprunts WHERE id_user = ?");
-                $req->execute([$id]);
+                $req = ConnexionDB::getInstance()->prepare("SELECT * FROM emprunts WHERE id_user = ? AND rendu = ?");
+                $req->execute([$id, $rendu]);
             } else {
                 // Si aucun ID n'est fourni, on récupère toutes les réservations
-                $req = ConnexionDB::getInstance()->prepare("SELECT * FROM emprunts");
-                $req->execute();
+                $req = ConnexionDB::getInstance()->prepare("SELECT * FROM emprunts WHERE rendu = ?");
+                $req->execute(array($rendu));
             }
     
             $resultat = [];
@@ -40,6 +42,7 @@ class ModelReservationDAO{
             return [];
         }
     }
+
 
     public static function getEquipementLibelle($id){
 
@@ -78,18 +81,12 @@ class ModelReservationDAO{
         }
     }
 
-    public static function getStockID($id){
-        $req = ConnexionDB::getInstance()->prepare("SELECT id_equip AS id FROM emprunts WHERE id_emprunt =?");
-        $req -> execute(array($id));
-        while($row = $req->fetch(PDO::FETCH_ASSOC)){
-            return [$row['id']];
-        }
-    }
+
     public static function reservationExist($idEquip){
         $req = ConnexionDB::getInstance()->prepare("
         SELECT id_emprunt 
         FROM emprunts 
-        WHERE id_equip = ?
+        WHERE id_equip = ? AND rendu = 0
         ");
         $req->execute(array($idEquip));
 
@@ -100,7 +97,7 @@ class ModelReservationDAO{
     public static function supprimerReservation($id){
         try{
 
-            $req = ConnexionDB::getInstance()->prepare("DELETE FROM emprunts WHERE id_emprunt = ?");
+            $req = ConnexionDB::getInstance()->prepare("UPDATE emprunts SET rendu = 1 WHERE id_emprunt = ?");
             $result = $req ->execute(array($id));
 
             if($result){

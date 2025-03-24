@@ -1,5 +1,5 @@
 <?php
-include_once("Data/ConnexionDB.php");
+include_once("./Data/ConnexionDB.php");
 
 class ModelConnDAO{
 

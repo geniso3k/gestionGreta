@@ -6,11 +6,31 @@ include_once("./Model/ModelCategorieDAO.php");
 
 class ModelEquipementDAO {
 
-    public static function getAllEquipement(){
+    public static function getAllEquipement($cat = null){
         try{
+            if(isset($cat)){
 
-            $req = ConnexionDB::getInstance()->query("SELECT * FROM equipement ");
-            $req->execute();
+                if(ModelCategorieDAO::existCategorie($cat)){
+
+                    $req = ConnexionDB::getInstance()->prepare("SELECT * FROM equipement WHERE catégorie = ? ORDER BY catégorie");
+                    $req ->execute(array($cat));
+
+                    if($req->rowCount() <1){
+
+                        return [];
+                    }
+
+                }else{
+
+                    echo '<script>window.location.href="./?action=accueil"</script>';
+                    die();
+                }
+
+            }else{
+
+                $req = ConnexionDB::getInstance()->query("SELECT * FROM equipement ");
+            }
+            
 
              //plusieurs lignes de résultat
              while ($ligne = $req->fetch(PDO::FETCH_ASSOC)) {
@@ -25,7 +45,9 @@ class ModelEquipementDAO {
 
                 $resultat[] = $unObjet;
             }     
-            return $resultat;      
+            
+                return $resultat; 
+               
 
 
         }catch(PDOException $ex){

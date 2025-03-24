@@ -21,6 +21,7 @@ body {
     gap: 20px;
     justify-content: space-between;
     margin-top: 20px;
+
 }
 
 /* Card Container */
@@ -31,6 +32,8 @@ body {
     justify-content: flex-start;
     width: 65%;
     height: 20%;
+    padding-left: 15px;
+
 }
 
 /* Single Card */
@@ -119,7 +122,7 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
     .ensemble {
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 
     .equip {
@@ -155,26 +158,87 @@ body {
     echo "<div class='alert alert-success'>La location s'est produite avec succès !</div>";
 } ?>
 
+
+
+
+
 <div class="ensemble">
     <div class="equip">
-        <?php for($i = 0; $i < count($resultat); $i++): ?>
-                <div class="defaut">
-                    <img class="photo" src="<?php echo "./img/".$resultat[$i]->getCode(); ?>.jpg" alt="img" />
-                    <div class="enfant">
-                        <h1><?=$resultat[$i]->getLibelle()?></h1>
-                        <div class="prix">
-                        <a href="./?action=location&article=<?=$resultat[$i]->getCode()?>" class="btn">Louer</a>
-                        </div>
+
+    <select id="categorie" name="categorie" class="form-control">
+
+                <option value="" disabled selected>Selectionnez la catégorie</option>
+                <?php foreach($allCat as $cat): ?>
+                    
+                    <option value="<?=$cat->getId();?>"><?=$cat->getLibelle();?></option>
+                <?php endforeach; ?>
+    </select>
+
+
+
+
+        <?php
+
+if(isset($_GET['idCat'])){
+    $categorie = filter_input(INPUT_GET, 'idCat', FILTER_SANITIZE_STRING);
+    $allobj = ModelEquipementDAO::getAllEquipement($categorie);
+
+   
+        foreach($allobj as $result){
+            if(!ModelReservationDAO::reservationExist($result->getCode()))
+            {
+                $resultat[] = $result;
+            }
+        
+        
+        }
+
+
+        
+        
+        if(isset($resultat)){
+        for($i = 0; $i < count($resultat); $i++):?>
+            <div class="defaut">
+                <img class="photo" src="<?php echo "./img/".$resultat[$i]->getCode(); ?>.jpg" alt="img" />
+                <div class="enfant">
+                    <h1><?=$resultat[$i]->getLibelle()?></h1>
+                    <div class="prix">
+                    <a href="./?action=location&article=<?=$resultat[$i]->getCode()?>" class="btn">Louer</a>
                     </div>
                 </div>
-        <?php endfor ?>
+            </div>
+
+        <?php endfor;
+
+    
+        }else{
+            echo 'Aucun article disponible.';
+        }
+        
+    }
+     ?>
+
+      
+
+
     </div>
 
-    <div class="description">
-        <img class="img-fluid" src="./img/commercial.jpg" alt="Commercial" />
-        <h2>Bienvenue sur notre site !</h2>
-        <p>Nous proposons une large sélection d'équipements à louer. Nous avons ce qu'il vous faut pour répondre à vos besoins.</p>
-        <p>Notre objectif est de faciliter l'accès à des équipements de qualité. Grâce à notre plateforme simple et intuitive, vous pouvez facilement louer des articles pour des périodes flexibles.</p>
-        <p>Faites confiance à notre service pour une expérience de location rapide et efficace, et profitez de notre stock toujours à jour pour trouver l'article dont vous avez besoin.</p>
-    </div>
+<div class="description">
+    <img class="img-fluid" src="./img/commercial.jpg" alt="Commercial" />
+    <h2>Bienvenue sur notre site !</h2>
+    <p>Notre site est une plateforme permettant aux enseignants de réserver et de louer facilement du matériel informatique pour leurs classes. Que ce soit pour des ordinateurs, des tablettes ou des projecteurs, notre service simplifie l'accès à ces outils informatiques essentiels.</p>
+    <p>Avec une réservation rapide en ligne, les professeurs peuvent choisir le matériel adapté à leurs besoins et à la durée de leur cours, pour un enseignement plus interactif et dynamique.</p>
 </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+$('#categorie').on('change', function() {               
+            var selectedValue = $(this).val(); // Get the selected value
+            
+            if (selectedValue != "") { // Check if it's not empty
+                window.location.href = "./?action=accueil&idCat=" + selectedValue;
+            }
+        });
+</script>

@@ -25,16 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $desc = filter_input(INPUT_POST, 'desc', FILTER_SANITIZE_STRING);
 
   
-        if (empty($categorieId) || empty($nom) || empty($prix) || empty($stock) || empty($desc)) {
+        if (empty($categorieId) || empty($nom)  || empty($desc)) {
             echo '<div class="alert alert-danger" role="alert">Tous les champs sont requis.</div>';
-        } elseif (!is_numeric($prix) || $prix <= 0) {
-            echo '<div class="alert alert-danger" role="alert">Le prix doit être un nombre positif.</div>';
-        } elseif (!is_numeric($stock) || $stock < 0) {
-            echo '<div class="alert alert-danger" role="alert">Le stock doit être un nombre entier positif ou zéro.</div>';
+        
         } else {
 
 
-            $result = ModelEquipementDAO::ajouterProduit($categorieId, $nom, $prix, $stock, $desc);
+            $result = ModelEquipementDAO::ajouterProduit($categorieId, $nom, $desc);
 
             // Vérifier si l'ajout a réussi
             if ($result) {

@@ -10,7 +10,11 @@ include_once("vue/vueEntete.php");
 include_once("Model/ModelReservationDAO.php");
 include_once("Model/ModelConnDAO.php");
 
-
+if(!isset($_GET['reservation'])){
+    $reservlink = 'encours';
+}else{
+    $reservlink = $_GET['reservation'];
+}
 
 
 $reservations = ModelReservationDAO::getAllReservation();

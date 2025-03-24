@@ -8,10 +8,16 @@ class ModelCategorieDAO{
 
     public static function getCategorie($id){
 
-        $req = ConnexionDB::getInstance()->prepare("SELECT * FROM categorie WHERE id = ?");
+        $req = ConnexionDB::getInstance()->prepare("SELECT libelle FROM categorie WHERE id = ?");
         $req -> execute(array($id));
         $row = $req->fetch(PDO::FETCH_ASSOC);
         return $row['libelle'];   
+
+    }
+    public static function existCategorie($id){
+        $req = ConnexionDB::getInstance()->prepare("SELECT libelle FROM categorie WHERE id = ?");
+        $req -> execute(array($id));
+        return ($req->rowCount()>0);
 
     }
 

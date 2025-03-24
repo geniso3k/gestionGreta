@@ -6,87 +6,19 @@
         padding: 0;
     }
 
-    header {
-        background-color: #343a40;
-        color: white;
-        padding: 20px;
-        text-align: center;
-    }
 
-    .container {
-        margin-top: 20px;
-    }
-
-    .reservation-list table {
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .reservation-list th, .reservation-list td {
-        text-align: center;
-        padding: 12px;
-    }
-
-    .reservation-list th {
-        background-color: #343a40;
-        color: white;
-    }
-
-    .reservation-list td {
-        background-color: white;
-        border: 1px solid #ddd;
-    }
-
-    .reservation-list a {
-        margin: 0 10px;
-        cursor: pointer;
-        text-decoration: none;
-        color: #007bff;
-    }
-
-    .reservation-list a:hover {
-        text-decoration: underline;
-    }
-
-    footer {
-        background-color: #343a40;
-        color: white;
-        text-align: center;
-        padding: 10px;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-    }
-
-    .btn {
-        padding: 8px 16px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        text-decoration: none;
-    }
-
-    .btn:hover {
-        background-color: #0056b3;
-    }
-
-    .modal-content {
-        border-radius: 10px;
-    }
 
 </style>
 
 <div class="container">
-
+<?php if($reservlink == 'encours'):?>
     <!-- Liste des réservations -->
-    <div class="reservation-list table-responsive">
-        <h2>Liste des réservations en cours</h2>
-        <table class="table table-bordered">
-            <thead>
+    <div  style="margin-top: 20px;" class="table-responsive table-container">
+        <h2>Liste des réservations en cours</h2><a href="./?action=allReservations&reservation=terminée">Voir les réservations terminée</a>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
                 <tr>
-                    <th>ID</th>
+                    <th scope="col">ID</th>
                     <th>Nom du client</th>
                     <th>Produit réservé</th>
                     <th>Date de début</th>
@@ -105,21 +37,21 @@
                     <td><?=$reservation->getDateDebut(); ?></td>
                     <td><?php 
 
-$time = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+                            $time = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 
 
-$reservationEndDate = DateTime::createFromFormat('Y-m-d', $reservation->getDateFin());
+                            $reservationEndDate = DateTime::createFromFormat('Y-m-d', $reservation->getDateFin());
 
-if ($reservationEndDate < $time) {
+                            if ($reservationEndDate < $time) {
 
-    echo '<b style="color:red;">'. $reservation->getDateFin() . '</b>';
-}else{
-    echo $reservation->getDateFin();
-}
+                                echo '<b style="color:red;">'. $reservation->getDateFin() . '</b>';
+                            }else{
+                                echo $reservation->getDateFin();
+                            }
 
-                    
-                    ?></td>
-<td><img width="100" height="50" src ="./img/signatures/<?=$reservation->getSignature()?>"/></td>
+                                                
+                                                ?></td>
+                            <td><img width="100" height="50" src ="./img/signatures/<?=$reservation->getSignature()?>"/></td>
                     <td>
                         <a href="#" data-toggle="modal" data-target="#editModal" data-id="<?=$reservation->getIdEmprunt();?>" data-client="<?=ModelConnDAO::getClientNom($reservation->getIdUser());?>" data-product="<?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?>" data-start="<?=$reservation->getDateDebut();?>" data-end="<?=$reservation->getDateFin();?>">Modifier</a> |
                         <a class="delete-btn" href="./?action=allReservations&supprimer=<?=$reservation->getIdEmprunt();?>" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?=$reservation->getIdEmprunt();?>">Rendu</a>
@@ -134,7 +66,62 @@ if ($reservationEndDate < $time) {
             </tbody>
         </table>
     </div>
+<?php else:?>
 
+<div  style="margin-top: 20px;" class="table-responsive table-container">
+        <h2>Liste des réservations terminées</h2><a href="./?action=allReservations">Voir les réservations en cours</a>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom du client</th>
+                    <th>Produit réservé</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th>Signature</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $reservations = ModelReservationDAO::getAllReservation(null, 1);
+                if(count($reservations) > 0): ?>
+                    <?php foreach($reservations as $reservation): ?>
+                <tr>
+                    <td><?=$reservation->getIdEmprunt(); ?></td>
+                    <td><?=ModelConnDAO::getClientNom($reservation->getIdUser());?></td>
+                    <td><?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?></td>
+                    <td><?=$reservation->getDateDebut(); ?></td>
+                    <td><?php 
+
+                                $time = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+
+
+                                $reservationEndDate = DateTime::createFromFormat('Y-m-d', $reservation->getDateFin());
+
+                                if ($reservationEndDate < $time) {
+
+                                    echo '<b style="color:red;">'. $reservation->getDateFin() . '</b>';
+                                }else{
+                                    echo $reservation->getDateFin();
+                                }
+
+                                                    
+                                                    ?></td>
+<td><img width="100" height="50" src ="./img/signatures/<?=$reservation->getSignature()?>"/></td>
+                    <td>
+                        <a href="#" data-toggle="modal" data-target="#editModal" data-id="<?=$reservation->getIdEmprunt();?>" data-client="<?=ModelConnDAO::getClientNom($reservation->getIdUser());?>" data-product="<?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?>" data-start="<?=$reservation->getDateDebut();?>" data-end="<?=$reservation->getDateFin();?>">Modifier</a> 
+                </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="6">Aucune réservation disponible.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif;?>
 </div>
 
 <!-- Modal de confirmation de suppression -->
@@ -142,17 +129,17 @@ if ($reservationEndDate < $time) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation de suppression</h5>
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Êtes-vous sûr de vouloir supprimer cette réservation ? Cette action est irréversible.</p>
+                <p>Êtes-vous sûr de vouloir archiver cette réservation ? Cette action est irréversible.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <a id="confirmDeleteButton" href="#" class="btn btn-danger">Continuer la suppression</a>
+                <a id="confirmDeleteButton" href="#" class="btn btn-danger">Continuer</a>
             </div>
         </div>
     </div>
@@ -205,7 +192,8 @@ if ($reservationEndDate < $time) {
     });
 
     // Lorsque l'utilisateur clique sur "Supprimer", ouvrir le modal de confirmation
-    $('.reservation-list a.delete-btn').on('click', function (e) {
+    $('.table-bordered a.delete-btn').on('click', function (e) {
+
         e.preventDefault();  // Empêche la propagation immédiate du lien
         var deleteUrl = $(this).attr('href');  // Récupère l'URL de suppression du lien
 

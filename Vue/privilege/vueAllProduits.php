@@ -1,71 +1,8 @@
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #343a40;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .container {
-            margin-top: 20px;
-        }
-
-        .product-form input, .product-form button {
-            margin: 5px;
-        }
-
-        .product-list table {
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .product-list th, .product-list td {
-            text-align: center;
-            padding: 12px;
-        }
-
-        .product-list th {
-            background-color: #343a40;
-            color: white;
-        }
-
-        .product-list td {
-            background-color: white;
-            border: 1px solid #ddd;
-        }
-
-        .product-list a {
-            margin: 0 10px;
-            cursor: pointer;
-            text-decoration: none;
-            color: #007bff;
-        }
-
-        .product-list a:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            background-color: #343a40;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-
-    </style>
-
+<style>
+    .mbottom{
+        margin-bottom:10px;
+    }
+</style>
 
 <div class="container">
 
@@ -73,8 +10,7 @@
     <div class="product-form">
         <h2>Ajouter un produit</h2>
         <form method="POST">
-            <select name="categorie" class="form-control">
-                <?php var_dump($allCat);?>
+            <select name="categorie" class="form-control mbottom">
                 <option value="" disabled selected>Selectionnez la catégorie</option>
                 <?php foreach($allCat as $cat): ?>
                     
@@ -82,8 +18,8 @@
                 <?php endforeach; ?>
             </select>
             
-            <input type="text" name="nom" class="form-control" placeholder="Nom du produit" required>
-            <textarea name="desc" class="form-control" placeholder="Description détaillée" required>Description détaillée</textarea>
+            <input type="text" name="nom" class="form-control mbottom" placeholder="Nom du produit" required>
+            <textarea name="desc" class="form-control mbottom" placeholder="Description détaillée" required>Description détaillée</textarea>
             <button type="submit" class="btn btn-primary mt-3" name="ajouter">Ajouter</button>
         </form>
     </div>
@@ -91,8 +27,8 @@
     <!-- Liste des produits -->
     <div class="product-list table-responsive">
         <h2>Liste des produits</h2>
-        <table class="table table-bordered">
-            <thead>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
                 <tr>
                     <th>ID</th>
                     <th>Catégorie</th>
@@ -120,6 +56,8 @@
             </tbody>
         </table>
     </div>
+
+    
 
 </div>
 
