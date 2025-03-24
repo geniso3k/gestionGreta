@@ -9,7 +9,7 @@
     <!-- Formulaire d'ajout de produit -->
     <div class="product-form">
         <h2>Ajouter un produit</h2>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <select name="categorie" class="form-control mbottom">
                 <option value="" disabled selected>Selectionnez la catégorie</option>
                 <?php foreach($allCat as $cat): ?>
@@ -17,9 +17,19 @@
                     <option value="<?=$cat->getId();?>"><?=$cat->getLibelle();?></option>
                 <?php endforeach; ?>
             </select>
-            
+            <select id="lieu" name="lieu" class="form-control mbottom">
+
+                    <option value="" disabled selected>Selectionnez la localité</option>
+                    <?php foreach($allLieu as $lieux): ?>
+                        
+                    <option value="<?=$lieux->getId();?>"><?=$lieux->getLibelle();?></option>
+
+                    <?php endforeach; ?>
+
+            </select>
             <input type="text" name="nom" class="form-control mbottom" placeholder="Nom du produit" required>
             <textarea name="desc" class="form-control mbottom" placeholder="Description détaillée" required>Description détaillée</textarea>
+            <p>Veuillez insérer une image</p> <input type="file" name="image" id="image" class="form-control" required> 
             <button type="submit" class="btn btn-primary mt-3" name="ajouter">Ajouter</button>
         </form>
     </div>
@@ -34,6 +44,7 @@
                     <th>Catégorie</th>
                     <th>Nom</th>
                     <th>Description</th>
+                    <th>Lieu</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -46,6 +57,7 @@
                     <td><?=$equip->getCategorie(); ?></td>
                     <td><?=$equip->getLibelle(); ?></td>
                     <td><?=$equip->getDescription()?></td>
+                    <td><?=ModelLieuDAO::getLieu($equip->getLieu());?></td>
                     <td>
                         <a href="#" data-toggle="modal" data-target="#editModal" data-id="<?=$equip->getCode();?>" data-desc="<?=$equip->getDescription()?>" data-nom="<?=$equip->getLibelle();?>"">Modifier</a> |
                         <a  class="delete-btn" href="./?action=allProduits&supprimer=<?=$equip->getCode();?>" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?=$equip->getCode();?>">Supprimer</a>
@@ -98,6 +110,16 @@
                     <input type="hidden" name="id" id="productId">
                     <input type="text" name="nom" id="productName" class="form-control" placeholder="Nom du produit" required>
                     <textarea  name="desc" id="productDesc" class="form-control" placeholder="Description" required></textarea>
+                    <select id="lieu" name="lieu" class="form-control mbottom">
+
+                    <option value="" disabled selected>Selectionnez la localité</option>
+                    <?php foreach($allLieu as $lieux): ?>
+                        
+                    <option value="<?=$lieux->getId();?>"><?=$lieux->getLibelle();?></option>
+
+                    <?php endforeach; ?>
+
+            </select>
                     <button type="submit" class="btn btn-primary mt-3" name="modifier">Modifier</button>
                 </form>
             </div>
@@ -116,15 +138,13 @@
         var button = $(event.relatedTarget);
         var id = button.data('id');
         var nom = button.data('nom');
-        var prix = button.data('prix');
-        var stock = button.data('stock');
+        var lieu = button.data('lieu');
         var desc = button.data('desc');
 
         var modal = $(this);
         modal.find('#productId').val(id);
         modal.find('#productName').val(nom);
-        modal.find('#productPrice').val(prix);
-        modal.find('#productStock').val(stock);
+        modal.find('#productLieu').val(lieu);
         modal.find('#productDesc').val(desc);
     });
 

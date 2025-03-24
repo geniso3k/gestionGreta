@@ -119,7 +119,7 @@ p {
                 <div class="enfant">
                     <h1><?php echo $equipement->getLibelle(); ?></h1>
                     <p>Date de réservation : <?php echo $reservation->getDateDebut(); ?></p>
-                    <p>A rendre <u>impérativement</u> le : </br><b><?=$datefin;?></b></p>
+                    <p>À rendre <u>impérativement</u> le : </br><b><?=$datefin;?></b></p>
                     
                 </div>
             </div>

@@ -173,15 +173,25 @@ body {
                     <option value="<?=$cat->getId();?>"><?=$cat->getLibelle();?></option>
                 <?php endforeach; ?>
     </select>
+    <select id="lieu" name="lieu" class="form-control">
+
+        <option value="" disabled selected>Selectionnez la localité</option>
+        <?php foreach($allLieu as $lieux): ?>
+            
+         <option value="<?=$lieux->getId();?>"><?=$lieux->getLibelle();?></option>
+
+        <?php endforeach; ?>
+
+    </select>
 
 
 
 
         <?php
 
-if(isset($_GET['idCat'])){
-    $categorie = filter_input(INPUT_GET, 'idCat', FILTER_SANITIZE_STRING);
-    $allobj = ModelEquipementDAO::getAllEquipement($categorie);
+if(isset($categorie) && isset($lieu)){
+
+    $allobj = ModelEquipementDAO::getAllEquipement($categorie, $lieu);
 
    
         foreach($allobj as $result){
@@ -233,12 +243,15 @@ if(isset($_GET['idCat'])){
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-$('#categorie').on('change', function() {               
-            var selectedValue = $(this).val(); // Get the selected value
+        $('#lieu').hide();
+        $('#categorie').on('change', function() {               
+            var selectedCat = $(this).val();
+            $('#lieu').show("slow");
+           $('#lieu').on('change', function(){
+                    var selectedLieu = $('#lieu').val();
+                    window.location.href="./?idCat=" + selectedCat + "&idLieu=" + selectedLieu;
+                    console.log(selectedLieu);
+                })
             
-            if (selectedValue != "") { // Check if it's not empty
-                window.location.href = "./?action=accueil&idCat=" + selectedValue;
-            }
         });
 </script>

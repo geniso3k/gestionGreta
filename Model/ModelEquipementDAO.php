@@ -3,17 +3,20 @@
 include_once("./Data/ConnexionDB.php");
 include_once("./classes/Equipement.php");
 include_once("./Model/ModelCategorieDAO.php");
+include_once("./Model/ModelLieuDAO.php");
 
 class ModelEquipementDAO {
 
-    public static function getAllEquipement($cat = null){
+    public static function getAllEquipement($cat = null, $lieu = null){
         try{
-            if(isset($cat)){
+            if(isset($cat) && isset($lieu)){
 
-                if(ModelCategorieDAO::existCategorie($cat)){
+                if(ModelCategorieDAO::existCategorie($cat) && ModelLieuDAO::existLieu($lieu)){
 
-                    $req = ConnexionDB::getInstance()->prepare("SELECT * FROM equipement WHERE catégorie = ? ORDER BY catégorie");
-                    $req ->execute(array($cat));
+                    
+
+                    $req = ConnexionDB::getInstance()->prepare("SELECT * FROM equipement WHERE catégorie = ? AND lieu = ? ORDER BY catégorie,lieu");
+                    $req ->execute(array($cat, $lieu));
 
                     if($req->rowCount() <1){
 
@@ -40,7 +43,8 @@ class ModelEquipementDAO {
                     $ligne['id'],
                     $ligne['libelle'], 
                     ModelCategorieDAO::getCategorie($ligne['catégorie']), 
-                    $ligne['description']
+                    $ligne['description'],
+                    $ligne['lieu']
             );
 
                 $resultat[] = $unObjet;
@@ -54,6 +58,24 @@ class ModelEquipementDAO {
             print "Erreur : ". $ex->getMessage();
         }
     }
+    public static function recupererAI(){
+
+        $sql = "
+        SELECT auto_increment 
+        FROM information_schema.tables 
+        WHERE table_name = 'equipement' AND table_schema = DATABASE();
+        ";
+    
+        try {
+            $req = ConnexionDB::getInstance()->query($sql);
+            return $req->fetch();
+        } catch (Exception $e) {
+            
+            echo 'Error: ' . $e->getMessage();
+            return null;
+        }
+    }
+    
     public static function findById($code){
         try {
             $req = ConnexionDB::getInstance()->prepare("SELECT * FROM equipement WHERE id = :code");
@@ -77,13 +99,13 @@ class ModelEquipementDAO {
 
     
 
-    public static function modifierAll($id, string $nom, $desc){
+    public static function modifierAll($id, string $nom, $desc, $lieu){
 
         try{
 
             
-            $req = ConnexionDB::getInstance() ->prepare("UPDATE equipement SET libelle = ?,  description = ? WHERE id = ?");
-            $result = $req -> execute(array($nom,$desc,$id));
+            $req = ConnexionDB::getInstance() ->prepare("UPDATE equipement SET libelle = ?,  description = ?, lieu = ? WHERE id = ?");
+            $result = $req -> execute(array($nom,$desc,$lieu,$id));
 
             if($result){
                 return true;
@@ -99,11 +121,11 @@ class ModelEquipementDAO {
 
     }
 
-    public static function ajouterProduit($categorie, $nom, $desc){
+    public static function ajouterProduit($categorie, $nom, $desc, $lieu){
 
         try{
-            $req = ConnexionDB::getInstance()->prepare("INSERT INTO equipement (catégorie, libelle,  description) VALUES (?,?, ?)");
-            $result = $req -> execute(array($categorie, $nom,  $desc));
+            $req = ConnexionDB::getInstance()->prepare("INSERT INTO equipement (catégorie, libelle,  description, lieu) VALUES (?,?,?, ?)");
+            $result = $req -> execute(array($categorie, $nom,  $desc, $lieu));
 
             if($result){
                 return true;

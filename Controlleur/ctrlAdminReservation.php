@@ -10,19 +10,35 @@ include_once("vue/vueEntete.php");
 include_once("Model/ModelReservationDAO.php");
 include_once("Model/ModelConnDAO.php");
 
-if(!isset($_GET['reservation'])){
-    $reservlink = 'encours';
-}else{
-    $reservlink = $_GET['reservation'];
-}
 
 
-$reservations = ModelReservationDAO::getAllReservation();
+$reservlink = isset($_GET['reservation']) ? $_GET['reservation'] : "encours";
+$rendu = isset($_GET['reservation']) ? 1 : 0;
+
+
+
+
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+
+
+$perPage = 10;
+
+// Calculer l'offset
+$start = ($page - 1) * $perPage;
+
+// systeme de pagination :::::::    $users = ModelReservationDAO::getReservation($start, $perPage);
+
+
+
+
+
+
+$reservations = ModelReservationDAO::getAllReservation(null, $rendu);
 if(isset($_GET['supprimer'])){
 
     if(is_numeric($_GET['supprimer'])){
 
-        if(ModelReservationDAO::reservationExiste($_GET['supprimer'])){
+        if(ModelReservationDAO::reservationExist($_GET['supprimer'])){
 
             if(ModelReservationDAO::supprimerReservation($_GET['supprimer'])){
 
@@ -32,6 +48,8 @@ if(isset($_GET['supprimer'])){
             }
 
 
+        }else{
+            echo '<div class="alert alert-danger" role="alert">La réservation n\'a pas été trouvée.</div>';  
         }
 
     }else{

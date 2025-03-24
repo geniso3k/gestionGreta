@@ -25,7 +25,6 @@ class ModelCategorieDAO{
 
 
         $req = ConnexionDB::getInstance() -> query("SELECT * FROM categorie");
-        $req -> execute();
         while($row = $req->fetch(PDO::FETCH_ASSOC)){
 
             $unObjet = new Categorie($row['id'], $row['libelle']);

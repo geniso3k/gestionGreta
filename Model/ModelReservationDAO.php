@@ -43,6 +43,35 @@ class ModelReservationDAO{
         }
     }
 
+    public static function getReservation($start, $perpage, $id = null){
+        if(isset($id)){
+        $sql = "SELECT * FROM emprunts WHERE id = ? LIMIT :start, :perPage";
+        }else{
+            $sql = "SELECT * FROM emprunts LIMIT :start, :perPage"; 
+        }
+        $stmt = ConnexionDB::getInstance()->prepare($sql);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':perPage', $perPage, PDO::PARAM_INT);
+        $stmt->execute(array($id));
+        $resultat = [];
+        // On récupère toutes les lignes de résultat
+        while ($ligne = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // On crée un objet Reservation avec les données récupérées
+            $unObjet = new Reservation(
+                $ligne['id_emprunt'],
+                $ligne['id_equip'],
+                $ligne['id_user'],
+                $ligne['dateDebut'],
+                $ligne['dateFin'],
+                $ligne['signature']
+            );
+            $resultat[] = $unObjet;
+        }
+        
+        return $resultat;
+
+    }
+
 
     public static function getEquipementLibelle($id){
 
@@ -97,7 +126,7 @@ class ModelReservationDAO{
     public static function supprimerReservation($id){
         try{
 
-            $req = ConnexionDB::getInstance()->prepare("UPDATE emprunts SET rendu = 1 WHERE id_emprunt = ?");
+            $req = ConnexionDB::getInstance()->prepare("UPDATE emprunts SET rendu = 1 WHERE id_equip = ?");
             $result = $req ->execute(array($id));
 
             if($result){
@@ -115,25 +144,7 @@ class ModelReservationDAO{
 
     }
 
-    public static function reservationExiste($id){
-
-        try{
-
-            $req = ConnexionDB::getInstance()->prepare("SELECT * FROM emprunts WHERE id_emprunt = ?");
-            $result = $req ->execute(array($id));
-
-            if($result){
-                return true;
-            }else{
-                return false;
-            }
-
-        }catch(PDOException $ex){
-            print ("erreur : ".$ex->getMessage());
-            die();
-        }
-
-    }
+ 
 
     public static function editDate($dateDebut, $dateFin, $id){
 

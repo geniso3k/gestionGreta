@@ -54,7 +54,7 @@
                             <td><img width="100" height="50" src ="./img/signatures/<?=$reservation->getSignature()?>"/></td>
                     <td>
                         <a href="#" data-toggle="modal" data-target="#editModal" data-id="<?=$reservation->getIdEmprunt();?>" data-client="<?=ModelConnDAO::getClientNom($reservation->getIdUser());?>" data-product="<?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?>" data-start="<?=$reservation->getDateDebut();?>" data-end="<?=$reservation->getDateFin();?>">Modifier</a> |
-                        <a class="delete-btn" href="./?action=allReservations&supprimer=<?=$reservation->getIdEmprunt();?>" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?=$reservation->getIdEmprunt();?>">Rendu</a>
+                        <a class="delete-btn" href="./?action=allReservations&supprimer=<?=$reservation->getIdEquip();?>" data-toggle="modal" data-target="#confirmDeleteModal" data-id="<?=$reservation->getIdEmprunt();?>">Rendu</a>
                     </td>
                 </tr>
                     <?php endforeach; ?>
@@ -84,7 +84,7 @@
             </thead>
             <tbody>
                 <?php
-                $reservations = ModelReservationDAO::getAllReservation(null, 1);
+                $reservations = ModelReservationDAO::getAllReservation(null, $rendu);
                 if(count($reservations) > 0): ?>
                     <?php foreach($reservations as $reservation): ?>
                 <tr>
