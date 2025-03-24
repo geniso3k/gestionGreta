@@ -8,9 +8,9 @@ include_once("$racine/model/ModelCategorieDAO.php");
 include_once("$racine/model/ModelLieuDAO.php");
 
 
-$categorie = isset($_GET['idCat']) ? filter_input(INPUT_GET, 'idCat', FILTER_SANITIZE_STRING) : null;
+$categorie = isset($_GET['idCat']) ? filter_input(INPUT_GET, 'idCat', FILTER_SANITIZE_STRING) : '*';
 
-$lieu = isset($_GET['idLieu']) ? filter_input(INPUT_GET, 'idLieu', FILTER_SANITIZE_STRING) : null;
+$lieu = isset($_GET['idLieu']) ? filter_input(INPUT_GET, 'idLieu', FILTER_SANITIZE_STRING) : '*';
 $allCat = ModelCategorieDAO::getAllCategorie();
 $allLieu = ModelLieuDAO::getAllLieu();
 

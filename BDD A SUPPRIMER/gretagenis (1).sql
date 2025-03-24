@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 24 mars 2025 à 13:07
+-- Généré le : lun. 24 mars 2025 à 16:22
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -57,6 +57,14 @@ CREATE TABLE `emprunts` (
   `rendu` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Déchargement des données de la table `emprunts`
+--
+
+INSERT INTO `emprunts` (`id_emprunt`, `id_equip`, `id_user`, `dateDebut`, `dateFin`, `signature`, `rendu`) VALUES
+(59, 2, 18, '2025-03-24', '2025-03-26', 'signature_67e170a22df56.png', 1),
+(60, 2, 18, '2025-03-12', '2025-03-20', 'signature_67e1786ddd596.png', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -67,21 +75,42 @@ CREATE TABLE `equipement` (
   `id` int(11) NOT NULL,
   `catégorie` int(11) NOT NULL,
   `libelle` varchar(50) NOT NULL,
-  `description` varchar(255) NOT NULL
+  `description` varchar(255) NOT NULL,
+  `lieu` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `equipement`
 --
 
-INSERT INTO `equipement` (`id`, `catégorie`, `libelle`, `description`) VALUES
-(1, 1, 'Tour', 'Processeur : Intel Core i5-6500 3.20 GHz</br>Mémoire : 16 GB RAM</br>Stockage : 240 GB SSD</br>Carte graphique : Intel HD 530</br>Système d\'exploitation : Windows 10'),
-(2, 1, 'Clavier', 'Clavier d&#39;ordinateurr'),
-(11, 1, 'Souris', 'Razer Basilisk V3 Pro 35K - Souris de Jeu Ergonomique sans Fil entièrement Personnalisable avec Chroma RGB'),
-(12, 1, 'Moniteur', 'Écran PC Incurvé | 39,7'),
-(14, 1, 'PC Gamer Vengeance - i9 - RTX 4060', 'PC Gamer Vengeance - i9 - RTX 4060'),
-(15, 2, 'Tronçonneuse', 'Tronçonneuse HUSQVARNA 135 Mark II avec Guide de 40 cm'),
-(16, 3, 'Table basse', 'Dimensions : 60x40x37cm');
+INSERT INTO `equipement` (`id`, `catégorie`, `libelle`, `description`, `lieu`) VALUES
+(2, 1, 'Clavier', 'Clavier d&#39;ordinateurr', 1),
+(11, 1, 'Souris', 'Razer Basilisk V3 Pro 35K - Souris de Jeu Ergonomique sans Fil entièrement Personnalisable avec Chroma RGB', 2),
+(12, 1, 'Moniteur', 'Écran PC Incurvé | 39,7', 1),
+(14, 1, 'PC Gamer Vengeance - i9 - RTX 4060', 'PC Gamer Vengeance - i9 - RTX 4060', 2),
+(15, 2, 'Tronçonneuse', 'Tronçonneuse HUSQVARNA 135 Mark II avec Guide de 40 cm', 1),
+(16, 3, 'Table basse', 'Dimensions : 60x40x37cm', 1),
+(25, 3, 'Chaise de bureau', 'Description détaillée', 2),
+(26, 2, 'Tronçonneuse', 'milwaukee', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `localisation`
+--
+
+CREATE TABLE `localisation` (
+  `id` int(11) NOT NULL,
+  `libelle` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `localisation`
+--
+
+INSERT INTO `localisation` (`id`, `libelle`) VALUES
+(1, 'Mulhouse'),
+(2, 'Colmar');
 
 -- --------------------------------------------------------
 
@@ -228,7 +257,14 @@ ALTER TABLE `emprunts`
 --
 ALTER TABLE `equipement`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `catégorie` (`catégorie`);
+  ADD KEY `catégorie` (`catégorie`),
+  ADD KEY `equipement` (`lieu`);
+
+--
+-- Index pour la table `localisation`
+--
+ALTER TABLE `localisation`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `role`
@@ -257,13 +293,19 @@ ALTER TABLE `categorie`
 -- AUTO_INCREMENT pour la table `emprunts`
 --
 ALTER TABLE `emprunts`
-  MODIFY `id_emprunt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id_emprunt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT pour la table `equipement`
 --
 ALTER TABLE `equipement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT pour la table `localisation`
+--
+ALTER TABLE `localisation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `role`
@@ -292,6 +334,7 @@ ALTER TABLE `emprunts`
 -- Contraintes pour la table `equipement`
 --
 ALTER TABLE `equipement`
+  ADD CONSTRAINT `equipement` FOREIGN KEY (`lieu`) REFERENCES `localisation` (`id`),
   ADD CONSTRAINT `equipement_ibfk_1` FOREIGN KEY (`catégorie`) REFERENCES `categorie` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

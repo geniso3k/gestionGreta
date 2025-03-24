@@ -81,8 +81,13 @@
         </p>
         
         <div class="form-group">
-            <label for="email">Location enregistrée sous le nom de : </label>
-            <input type="email" class="form-control" value="<?= ModelConnDAO::getClientNom($_SESSION['user_id']);?>" disabled id="email" placeholder="name@example.com">
+            <label for="text">Location enregistrée sous le nom de : </label>
+            <input type="text" class="form-control" value="<?= ModelConnDAO::getClientNom($_SESSION['user_id']);?>" disabled id="email" >
+        </div>
+
+        <div class="form-group">
+            <label for="text">Lieu : </label>
+            <input type="text" class="form-control" value="<?= ModelLieuDAO::getLieu($modele->getLieu())?>" disabled id="email" >
         </div>
         
         <div class="form-group">

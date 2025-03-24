@@ -168,6 +168,7 @@ body {
     <select id="categorie" name="categorie" class="form-control">
 
                 <option value="" disabled selected>Selectionnez la catégorie</option>
+                <option value="*">Tous</option>
                 <?php foreach($allCat as $cat): ?>
                     
                     <option value="<?=$cat->getId();?>"><?=$cat->getLibelle();?></option>
@@ -176,6 +177,7 @@ body {
     <select id="lieu" name="lieu" class="form-control">
 
         <option value="" disabled selected>Selectionnez la localité</option>
+        <option value="*">Tous</option>
         <?php foreach($allLieu as $lieux): ?>
             
          <option value="<?=$lieux->getId();?>"><?=$lieux->getLibelle();?></option>
@@ -190,6 +192,13 @@ body {
         <?php
 
 if(isset($categorie) && isset($lieu)){
+
+    if($categorie == '*'){
+        $categorie = null;
+    }
+    if($lieu == '*'){
+        $lieu = null;
+    }
 
     $allobj = ModelEquipementDAO::getAllEquipement($categorie, $lieu);
 
@@ -212,8 +221,9 @@ if(isset($categorie) && isset($lieu)){
                 <img class="photo" src="<?php echo "./img/".$resultat[$i]->getCode(); ?>.jpg" alt="img" />
                 <div class="enfant">
                     <h1><?=$resultat[$i]->getLibelle()?></h1>
+                    <p>Localité : <b><?=ModelLieuDAO::getLieu($resultat[$i]->getLieu()) ?></b></p>
                     <div class="prix">
-                    <a href="./?action=location&article=<?=$resultat[$i]->getCode()?>" class="btn">Louer</a>
+                    <a href="./?action=location&article=<?=$resultat[$i]->getCode()?>" class="btn">Réserver</a>
                     </div>
                 </div>
             </div>

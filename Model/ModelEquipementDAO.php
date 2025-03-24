@@ -9,25 +9,58 @@ class ModelEquipementDAO {
 
     public static function getAllEquipement($cat = null, $lieu = null){
         try{
-            if(isset($cat) && isset($lieu)){
+            if((isset($cat) && isset($lieu)) || isset($cat) ||isset($lieu)){
 
-                if(ModelCategorieDAO::existCategorie($cat) && ModelLieuDAO::existLieu($lieu)){
+                if($cat != null && $lieu == null){
+                    if(ModelCategorieDAO::existCategorie($cat)){
+
+                        $sql = "SELECT * FROM equipement WHERE catégorie = ? ORDER BY catégorie,lieu";
+                        $param = array($cat);
+
+                    }else{
+                        echo '<script>window.location.href="./?action=accueil"</script>';
+                        die();
+                    }
+                }else if($cat == null && $lieu != null){
+                    if(ModelLieuDAO::existLieu($lieu)){
+
+                        $sql = "SELECT * FROM equipement WHERE lieu = ? ORDER BY catégorie,lieu";
+                        $param = array($lieu);
+
+                    }else{
+                        echo '<script>window.location.href="./?action=accueil"</script>';
+                        die();
+                    }
+                }else{
+                    if(ModelCategorieDAO::existCategorie($cat) && ModelLieuDAO::existLieu($lieu)){
+
+                        $sql = "SELECT * FROM equipement WHERE catégorie = ? AND lieu = ? ORDER BY catégorie,lieu";
+                        $param = array($cat,$lieu);
+
+                    }else{
+                        echo '<script>window.location.href="./?action=accueil"</script>';
+                        
+                    }
+                }
+
+
+
+
 
                     
 
-                    $req = ConnexionDB::getInstance()->prepare("SELECT * FROM equipement WHERE catégorie = ? AND lieu = ? ORDER BY catégorie,lieu");
-                    $req ->execute(array($cat, $lieu));
+                    $req = ConnexionDB::getInstance()->prepare($sql);
+                    $req ->execute($param);
 
                     if($req->rowCount() <1){
 
                         return [];
                     }
 
-                }else{
+                
 
-                    echo '<script>window.location.href="./?action=accueil"</script>';
-                    die();
-                }
+                    
+                
 
             }else{
 
@@ -84,7 +117,7 @@ class ModelEquipementDAO {
 
             //une seule ligne de résultat traitée comme s'il y en avait plusieurs (pour harmoniser la vue résultat)
             while ($ligne = $req->fetch(PDO::FETCH_ASSOC)) {
-                $unEquipement = new Equipement($ligne['id'], $ligne['libelle'],  null, $ligne['description']);
+                $unEquipement = new Equipement($ligne['id'], $ligne['libelle'],  null, $ligne['description'], $ligne['lieu']);
             }            
             return $unEquipement;
 
