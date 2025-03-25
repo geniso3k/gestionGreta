@@ -202,6 +202,33 @@ class ModelEquipementDAO {
 
     }
 
+    public static function rechercher( string $motcle){
+        try{
+            $motcle = "%".$motcle."%";
+            $req = ConnexionDB::getInstance()->prepare("SELECT * FROM `equipement` WHERE `libelle` LIKE ?");
+            $req -> execute(array($motcle));
+            $objets = [];
+            while ($ligne = $req->fetch(PDO::FETCH_ASSOC)) {
+
+                
+                    $unObjet = new Equipement(
+                        $ligne['id'],
+                        $ligne['libelle'], 
+                        ModelCategorieDAO::getCategorie($ligne['catégorie']), 
+                        $ligne['description'],
+                        $ligne['lieu']
+                );
+
+                $objets[] = $unObjet;
+            }
+
+            return $objets;
+
+        }catch(PDOException $ex){
+            echo 'Erreur : '. $ex->getMessage(); die();
+        }
+    }
+
 
 }
 ?>

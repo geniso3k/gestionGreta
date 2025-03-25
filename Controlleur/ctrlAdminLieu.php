@@ -2,7 +2,7 @@
 include_once("Model/ModelConnDAO.php");
 include_once("Model/ModelLieuDAO.php");
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] > 2) {
+if (!isset($_SESSION['role']) || $_SESSION['role'] > 1) {
     include_once("vue/vue404.html");
     die();
 }

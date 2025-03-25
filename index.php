@@ -5,6 +5,7 @@
 
     //inclure le routeur
     include "$racine/Controlleur/Routeur.php";
+    include_once("$racine/Model/ModelConnDAO.php");
 
     //Récupération de l'action à exécuter dans l'URL en méthode GET
     $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);

@@ -15,6 +15,12 @@ $allCat = ModelCategorieDAO::getAllCategorie();
 $allLieu = ModelLieuDAO::getAllLieu();
 
 
+
+    $allobj = isset($_POST['search']) ? ModelEquipementDAO::rechercher(filter_input(INPUT_POST, 'search', FILTER_SANITIZE_STRING)) : null;
+
+
+
+
 include "$racine/vue/VueAccueil.php";
 include "$racine/vue/VuePied.php";
 

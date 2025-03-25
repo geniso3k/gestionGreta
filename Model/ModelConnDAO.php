@@ -82,6 +82,12 @@ class ModelConnDAO{
 
 
     }
+    public static function getEmail($id){
+        $req = ConnexionDB::getInstance()->prepare("SELECT email FROM utilisateur WHERE id = ?");
+        $req->execute(array($id));
+        $row = $req->fetch();
+        return $row['email'];
+    }
 
 
     public static function getUsers($start, $perPage) {

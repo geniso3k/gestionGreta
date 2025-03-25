@@ -11,15 +11,18 @@
              
              <div class="navbar-brand">Greta Location</div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+            <h5><?php if(isset($_SESSION['user_id'])){ echo ModelConnDAO::getClientNom($_SESSION['user_id']);}?>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
   <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
 </svg>
+</h5>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarsExample01">
               <ul class="navbar-nav mr-auto">
     <?php if(!isset($_SESSION["email"])) :?>
                 <li class="nav-item">
+                  
                   <a class="nav-link" href="./?action=connexion">Se connecter</a>
                 </li>
                 <li class="nav-item">
@@ -38,14 +41,15 @@
                 <li class="nav-item">
                   <a class="nav-link" href="./?action=allProduits">Produits</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="./?action=allLieu">Lieux</a>
-                </li>
+                
                 <li class="nav-item">
                   <a class="nav-link" href="./?action=allReservations">Réservations</a>
                 </li>
                 <?php endif;?>
                 <?php if($_SESSION['role'] <2):?>
+                  <li class="nav-item">
+                  <a class="nav-link" href="./?action=allLieu">Lieux</a>
+                </li>
                   <li class="nav-item">
                   <a class="nav-link" href="./?action=allUtilisateurs">Utilisateurs</a>
                 </li>

@@ -11,6 +11,7 @@ body {
     background-color: #f9f9f9;
     color: #333;
     line-height: 1.6;
+    overflow-y:hidden;
 }
 
 /* Container */
@@ -31,8 +32,9 @@ body {
     gap: 20px;
     justify-content: flex-start;
     width: 65%;
-    height: 20%;
+    max-height: 100vh;
     padding-left: 15px;
+    overflow-y: auto;
 
 }
 
@@ -121,12 +123,16 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    body{
+        overflow-y: auto;
+    }
     .ensemble {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 
     .equip {
         width: 100%;
+        height: 20%;
     }
 
     .defaut {
@@ -164,7 +170,10 @@ body {
 
 <div class="ensemble">
     <div class="equip">
-
+        <form id="searchForm" style="width:100%;" method="POST">
+            <input id="search" name="search" type="text" class="form-control" placeholder="Rechercher un produit..." />
+        </form>
+    <p> OU</p>
     <select id="categorie" name="categorie" class="form-control">
 
                 <option value="" disabled selected>Selectionnez la catégorie</option>
@@ -199,9 +208,10 @@ if(isset($categorie) && isset($lieu)){
     if($lieu == '*'){
         $lieu = null;
     }
-
-    $allobj = ModelEquipementDAO::getAllEquipement($categorie, $lieu);
-
+    if($allobj == null){
+        $allobj = ModelEquipementDAO::getAllEquipement($categorie, $lieu);
+    }
+    //var_dump($allobj); die();
    
         foreach($allobj as $result){
             if(!ModelReservationDAO::reservationExist($result->getCode()))
@@ -245,9 +255,9 @@ if(isset($categorie) && isset($lieu)){
 
 <div class="description">
     <img class="img-fluid" src="./img/commercial.jpg" alt="Commercial" />
-    <h2>Bienvenue sur notre site !</h2>
-    <p>Notre site est une plateforme permettant aux enseignants de réserver et de louer facilement du matériel informatique pour leurs classes. Que ce soit pour des ordinateurs, des tablettes ou des projecteurs, notre service simplifie l'accès à ces outils informatiques essentiels.</p>
-    <p>Avec une réservation rapide en ligne, les professeurs peuvent choisir le matériel adapté à leurs besoins et à la durée de leur cours, pour un enseignement plus interactif et dynamique.</p>
+    <h2>Bienvenue sur Greta Location !</h2>
+    <p>Greta Location est une plateforme permettant aux employés de réserver et de louer facilement du matériel. Que ce soit pour des ordinateurs, des meubles ou des outils, notre service simplifie l'accès à ces éléments essentiels.</p>
+    <p>Avec une réservation rapide en ligne, vous pouvez choisir le matériel adapté à vos besoins, pour un environnement plus interactif et dynamique.</p>
 </div>
 
 </div>
@@ -264,4 +274,16 @@ if(isset($categorie) && isset($lieu)){
                 })
             
         });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#search').focus(function() {
+            $('#search').keypress(function(e) {
+                var key = e.which;
+                if (key == 13) {  
+                    $("#searchForm").submit();
+                }
+            });
+        });
+    });
 </script>

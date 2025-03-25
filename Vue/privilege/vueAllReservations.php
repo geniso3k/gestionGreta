@@ -32,7 +32,7 @@
                     <?php foreach($reservations as $reservation): ?>
                 <tr>
                     <td><?=$reservation->getIdEmprunt(); ?></td>
-                    <td><?=ModelConnDAO::getClientNom($reservation->getIdUser());?></td>
+                    <td><?=ModelConnDAO::getClientNom($reservation->getIdUser());?> </td>
                     <td><?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?></td>
                     <td><?=$reservation->getDateDebut(); ?></td>
                     <td><?php 
@@ -43,7 +43,9 @@
                             $reservationEndDate = DateTime::createFromFormat('Y-m-d', $reservation->getDateFin());
 
                             if ($reservationEndDate < $time) {
-
+                               /* if(!ModelReservationDAO::envoieMail(ModelConnDAO::getEmail($reservation->getIdUser()), $reservation->getIdEmprunt(),ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()), $reservationEndDate)){
+                                    echo'erreur';
+                                }*/
                                 echo '<b style="color:red;">'. $reservation->getDateFin() . '</b>';
                             }else{
                                 echo $reservation->getDateFin();
@@ -92,22 +94,7 @@
                     <td><?=ModelConnDAO::getClientNom($reservation->getIdUser());?></td>
                     <td><?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?></td>
                     <td><?=$reservation->getDateDebut(); ?></td>
-                    <td><?php 
-
-                                $time = DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
-
-
-                                $reservationEndDate = DateTime::createFromFormat('Y-m-d', $reservation->getDateFin());
-
-                                if ($reservationEndDate < $time) {
-
-                                    echo '<b style="color:red;">'. $reservation->getDateFin() . '</b>';
-                                }else{
-                                    echo $reservation->getDateFin();
-                                }
-
-                                                    
-                                                    ?></td>
+                    <td><?=$reservation->getDateFin();?></td>
 <td><img width="100" height="50" src ="./img/signatures/<?=$reservation->getSignature()?>"/></td>
                     <td>
                         <a href="#" data-toggle="modal" data-target="#editModal" data-id="<?=$reservation->getIdEmprunt();?>" data-client="<?=ModelConnDAO::getClientNom($reservation->getIdUser());?>" data-product="<?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?>" data-start="<?=$reservation->getDateDebut();?>" data-end="<?=$reservation->getDateFin();?>">Modifier</a> 

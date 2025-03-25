@@ -168,7 +168,7 @@ class ModelReservationDAO{
     }
     public static function envoieMail($email, $idEmprunt, $equip, $dateFin) {
 
-
+        
 
         $to = $email;
         $subject = "Retour de votre réservation Nr: $idEmprunt";
