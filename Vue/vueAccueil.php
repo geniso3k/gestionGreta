@@ -25,20 +25,20 @@ body {
 
 }
 
-/* Card Container */
+
 .equip {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: flex-start;
     width: 65%;
-    max-height: 100vh;
+    max-height: 800px;
     padding-left: 15px;
     overflow-y: auto;
 
 }
 
-/* Single Card */
+
 .defaut {
     display: flex;
     flex-direction: column;
@@ -83,7 +83,7 @@ body {
     color: #666;
 }
 
-/* Button */
+/* Boutton */
 .btn {
     padding: 12px 20px;
     width: 100%;
@@ -171,7 +171,7 @@ body {
 <div class="ensemble">
     <div class="equip">
         <form id="searchForm" style="width:100%;" method="POST">
-            <input id="search" name="search" type="text" class="form-control" placeholder="Rechercher un produit..." />
+            <input id="search" name="search" type="text" class="form-control" placeholder="Rechercher un produit en particulier..." />
         </form>
     <p> OU</p>
     <select id="categorie" name="categorie" class="form-control">

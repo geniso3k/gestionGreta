@@ -64,7 +64,7 @@ class ModelEquipementDAO {
 
             }else{
 
-                $req = ConnexionDB::getInstance()->query("SELECT * FROM equipement ");
+                $req = ConnexionDB::getInstance()->query("SELECT * FROM equipement ORDER BY catégorie,lieu");
             }
             
 
@@ -204,6 +204,7 @@ class ModelEquipementDAO {
 
     public static function rechercher( string $motcle){
         try{
+            sleep(0.5);
             $motcle = "%".$motcle."%";
             $req = ConnexionDB::getInstance()->prepare("SELECT * FROM `equipement` WHERE `libelle` LIKE ?");
             $req -> execute(array($motcle));
