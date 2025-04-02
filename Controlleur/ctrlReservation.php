@@ -1,17 +1,17 @@
 <?php
 include_once("Model/ModelReservationDAO.php");
 include_once("Model/ModelEquipementDAO.php");
-include_once($racine."/vue/vueEntete.php");
+include_once($racine."/Vue/VueEntete.php");
 if (!isset($_SESSION['role'])) {
-    header("Location: ./?action=connexion");
-    die();
+    echo '<script>window.location.href = "./?action=connexion";</script>';
+			die();
 }
 $reservations = ModelReservationDAO::getAllReservation($_SESSION['user_id']);
 
 
 
-include_once($racine."/vue/vueReservation.php");
-include_once($racine."/vue/vuePied.php");
+include_once($racine."/Vue/VueReservation.php");
+include_once($racine."/Vue/VuePied.php");
 
 
 ?>

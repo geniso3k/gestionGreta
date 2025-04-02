@@ -5,7 +5,7 @@ include_once("Model/ModelEquipementDAO.php");
 
 class ModelReservationDAO{
 
-    public static function getAllReservation($id = null, $rendu = 0) {
+    public static function getAllReservation($id = null, $rendu = 0, $emprunt = null) {
         try {
 
 
@@ -13,7 +13,12 @@ class ModelReservationDAO{
             if ($id !== null) {
                 $req = ConnexionDB::getInstance()->prepare("SELECT * FROM emprunts WHERE id_user = ? AND rendu = ?");
                 $req->execute([$id, $rendu]);
-            } else {
+            } else if($emprunt !== null) {
+
+                $req = ConnexionDB::getInstance()->prepare("SELECT * FROM emprunts WHERE id_equip = ? AND rendu = ? ORDER BY dateDebut DESC");
+                $req->execute([$emprunt, $rendu]);
+
+            }else{
                 // Si aucun ID n'est fourni, on récupère toutes les réservations
                 $req = ConnexionDB::getInstance()->prepare("SELECT * FROM emprunts WHERE rendu = ?");
                 $req->execute(array($rendu));

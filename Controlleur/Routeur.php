@@ -5,10 +5,10 @@ class Routeur{
   
     private static $lesActions = array(
         'defaut' => '../Vue/vue404.html',
-        'accueil' => 'CtrlAccueil.php',
-        'reservation' => 'CtrlReservation.php',
-        'connexion' => 'CtrlUser.php',     
-        'enregistrement' => 'CtrlUser.php',        
+        'accueil' => 'ctrlAccueil.php',
+        'reservation' => 'ctrlReservation.php',
+        'connexion' => 'ctrlUser.php',     
+        'enregistrement' => 'ctrlUser.php',        
         'deconnexion' => 'ctrlUser.php',        
         'location' => 'ctrlLocation.php', 
         'allProduits' => 'ctrlAdminProduit.php',

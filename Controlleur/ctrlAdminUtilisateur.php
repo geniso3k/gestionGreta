@@ -2,7 +2,7 @@
 
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] > 1) {
-    include_once("vue/vue404.html");
+    include_once("Vue/Vue404.html");
     die();
 }
 
@@ -31,7 +31,7 @@ $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 
 
-include_once("vue/vueEntete.php");
+include_once("Vue/VueEntete.php");
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -47,8 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     if(ModelConnDAO::updateRole($_POST['role'], $_POST['user_id'])){
 
-                        header("Location: ./?action=allUtilisateurs&alert=succes"); 
-                        exit();
+
+  echo '<script>window.location.href = "./?action=allUtilisateurs&alert=succes";</script>';
+	die();
                     }else{
                         echo '<div class="alert alert-danger" role="alert">Une erreur s\'est produite.</div>'; 
                     }
@@ -73,9 +74,8 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
             if(ModelConnDAO::exist($_GET['email'])){
 
                 if(ModelConnDAO::supprimerUser($_GET['id'])){
-
-                    header("Location: ./?action=allUtilisateurs&alert=succes"); 
-                        exit();
+  echo '<script>window.location.href = "./?action=allUtilisateurs&alert=succes";</script>';
+	die();
 
                 }
 
@@ -103,7 +103,7 @@ if(isset($_GET['alert']) && $_GET['alert'] == 'succes'){
     echo '<div class="alert alert-success" role="alert">Action réalisée avec succès.</div>';
 }
 
-include_once("vue/privilege/vueAllUsers.php");
-include_once("vue/vuePied.php");
+include_once("Vue/privilege/vueAllUsers.php");
+include_once("Vue/VuePied.php");
 
 ?>

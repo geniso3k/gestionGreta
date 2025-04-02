@@ -1,7 +1,7 @@
 <?php
 include_once("Model/ModelEquipementDAO.php");
 include_once("Model/ModelReservationDAO.php");
-include_once("vue/vueEntete.php");
+include_once("Vue/VueEntete.php");
 include_once("Model/ModelConnDAO.php");
 
 if(isset($_SESSION['email'])){
@@ -13,8 +13,17 @@ if(isset($_SESSION['email'])){
 
  
         
-        $email = filter_var($_SESSION['email'], FILTER_VALIDATE_EMAIL);
-        $datepicker = filter_var($_POST['datepicker'], FILTER_SANITIZE_STRING); 
+$email = filter_var($_SESSION['email'], FILTER_VALIDATE_EMAIL);
+
+
+$datepicker = filter_var($_POST['datepicker'], FILTER_SANITIZE_SPECIAL_CHARS);
+
+
+if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['datepicker'])) {
+    $datepicker = $_POST['datepicker'];  // Ensure it's a valid date string.
+} else {
+    $datepicker = null;  // Or handle the invalid case.
+}
 
 
 
@@ -54,8 +63,8 @@ if(isset($_SESSION['email'])){
 
                         $location = ModelReservationDAO::ajouterLocation($modele, $_SESSION['user_id'], $_POST['datepicker'], $dateaujd->format("Y-m-d"), $newFileName);
                         if($location){
-                            header("Location: ./?action=accueil&alert=succes");
-                            die();
+                              echo '<script>window.location.href = "./?action=accueil&alert=succes";</script>';
+	die();
                         }
 
 
@@ -88,14 +97,15 @@ if(isset($_SESSION['email'])){
 
     }
 }
-    include_once("vue/vueFormulaireLoc.php");
+    include_once("Vue/VueFormulaireLoc.php");
 
 }else{
 
-    header("Location: ./?action=connexion");
+    echo '<script>window.location.href = "./?action=connexion";</script>';
+	die();
 
 }
-include_once("vue/vuePied.php");
+include_once("Vue/VuePied.php");
 
 
 

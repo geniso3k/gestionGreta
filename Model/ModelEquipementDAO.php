@@ -204,7 +204,8 @@ class ModelEquipementDAO {
 
     public static function rechercher( string $motcle){
         try{
-            sleep(0.5);
+            usleep(500000); 
+
             $motcle = "%".$motcle."%";
             $req = ConnexionDB::getInstance()->prepare("SELECT * FROM `equipement` WHERE `libelle` LIKE ?");
             $req -> execute(array($motcle));

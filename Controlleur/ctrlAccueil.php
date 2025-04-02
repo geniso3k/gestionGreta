@@ -1,28 +1,22 @@
 <?php
 
 // Affichage des vues
-include "$racine/vue/VueEntete.php";
-include_once("$racine/model/ModelEquipementDAO.php");
-include_once("$racine/model/ModelReservationDAO.php");
-include_once("$racine/model/ModelCategorieDAO.php");
-include_once("$racine/model/ModelLieuDAO.php");
+include "$racine/Vue/VueEntete.php";
+include_once("$racine/Model/ModelEquipementDAO.php");
+include_once("$racine/Model/ModelReservationDAO.php");
+include_once("$racine/Model/ModelCategorieDAO.php");
+include_once("$racine/Model/ModelLieuDAO.php");
 
-
-$categorie = isset($_GET['idCat']) ? filter_input(INPUT_GET, 'idCat', FILTER_SANITIZE_STRING) : '*';
-
-$lieu = isset($_GET['idLieu']) ? filter_input(INPUT_GET, 'idLieu', FILTER_SANITIZE_STRING) : '*';
+$categorie = isset($_GET['idCat']) ? filter_input(INPUT_GET, 'idCat', FILTER_DEFAULT) : '*';
+$lieu = isset($_GET['idLieu']) ? filter_input(INPUT_GET, 'idLieu', FILTER_DEFAULT) : '*';
 $allCat = ModelCategorieDAO::getAllCategorie();
 $allLieu = ModelLieuDAO::getAllLieu();
 
+$allobj = isset($_POST['search']) ? ModelEquipementDAO::rechercher(filter_input(INPUT_POST, 'search', FILTER_DEFAULT)) : null;
 
 
-    $allobj = isset($_POST['search']) ? ModelEquipementDAO::rechercher(filter_input(INPUT_POST, 'search', FILTER_SANITIZE_STRING)) : null;
-
-
-
-
-include "$racine/vue/VueAccueil.php";
-include "$racine/vue/VuePied.php";
+include "$racine/Vue/VueAccueil.php";
+include "$racine/Vue/VuePied.php";
 
 
 ?>

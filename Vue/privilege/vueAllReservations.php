@@ -68,6 +68,51 @@
             </tbody>
         </table>
     </div>
+    
+    <?php if(isset($retour)):?>
+
+        
+        
+            <div  style="margin-top: 20px;" class="table-responsive table-container">
+            <h2>Historique d'emprunt du matériel</h2><a href="./?action=allReservations">Voir les réservations en cours</a>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom du client</th>
+                        <th>Produit réservé</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th>Signature</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    
+                    $reservations = ModelReservationDAO::getAllReservation(null, 1, $retour);
+                    if(count($reservations) > 0): ?>
+                        <?php foreach($reservations as $reservation): ?>
+                    <tr>
+                        <td><?=$reservation->getIdEmprunt(); ?></td>
+                        <td><?=ModelConnDAO::getClientNom($reservation->getIdUser());?></td>
+                        <td><?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?></td>
+                        <td><?=$reservation->getDateDebut(); ?></td>
+                        <td><?=$reservation->getDateFin();?></td>
+    <td><img width="100" height="50" src ="./img/signatures/<?=$reservation->getSignature()?>"/></td>
+                        <td>
+                            <a href="#" data-toggle="modal" data-target="#editModal" data-id="<?=$reservation->getIdEmprunt();?>" data-client="<?=ModelConnDAO::getClientNom($reservation->getIdUser());?>" data-product="<?=ModelReservationDAO::getEquipementLibelle($reservation->getIdEquip()) ?>" data-start="<?=$reservation->getDateDebut();?>" data-end="<?=$reservation->getDateFin();?>">Modifier</a> 
+                    </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="6">Aucune réservation disponible.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif;?>
 <?php else:?>
 
 <div  style="margin-top: 20px;" class="table-responsive table-container">
