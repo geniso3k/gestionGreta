@@ -1,3 +1,11 @@
+<?php
+
+if(isset($_SESSION['user_id'])){
+  $nomClient =ModelConnDAO::getClientNom($_SESSION['user_id']) ;
+}else{
+  $nomClient = "";
+}
+?>
 <html>
     <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
@@ -9,10 +17,10 @@
 <nav class="navbar navbar-dark" style="background-color: black;">
              
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
-            <h5><?php if(isset($_SESSION['user_id'])){ echo ModelConnDAO::getClientNom($_SESSION['user_id']);}?>
+            <h5>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
   <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-</svg>
+</svg><p id="nomClient"></p>
 </h5>
             </button>
             <a class="navbar-brand" href="./?action=accueil">
