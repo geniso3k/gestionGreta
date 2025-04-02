@@ -1,22 +1,28 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
-        <link rel="stylesheet" href="css/navbar.css" />
+        <link rel="stylesheet" href="./css/navbar.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     </head>
 <body>
 <nav class="navbar navbar-dark" style="background-color: black;">
-             <a class="navbar-brand" href="./?action=accueil">Accueil</a>
              
-             <div class="navbar-brand">Greta Location</div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
             <h5><?php if(isset($_SESSION['user_id'])){ echo ModelConnDAO::getClientNom($_SESSION['user_id']);}?>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
   <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
 </svg>
 </h5>
             </button>
+            <a class="navbar-brand" href="./?action=accueil">
+  Accueil
+</a>     
+
+
+  <img src="img/logo.png" class="logo"  alt="Greta Location"/>
+
+             
 
             <div class="collapse navbar-collapse" id="navbarsExample01">
               <ul class="navbar-nav mr-auto">

@@ -4,7 +4,18 @@
         padding:25px;
     }
     .navbar *{
-        font-size: 12px;
+        font-size: 20px;
     }
+    .logo{
+        max-height: 50px !important;
+    }
+    
 }
+
+.logo {
+    max-height: 70px; 
+    height: auto; 
+    background-color: white;
+}
+
 
