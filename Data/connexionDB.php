@@ -21,10 +21,10 @@
         public static function getInstance(){
             if(!self::$connexion){
                 try {
-                    $serveur = 'mysql:host=db5017546525.hosting-data.io;';
-                    $bdd = 'dbname=dbs14057594';   		
-                    $user = 'dbu5674762' ; 
-                    $mdp = '5d2f6JEAN!?' ;
+                    $serveur = 'mysql:host=localhost;';
+                    $bdd = 'dbname=gretagenis';   		
+                    $user = 'root' ; 
+                    $mdp = '' ; #5d2f6JEAN!?
 
                     self::$connexion = new PDO($serveur.$bdd, $user, $mdp); 
                     self::$connexion->query("SET CHARACTER SET utf8");

@@ -4,7 +4,17 @@ session_start();
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+if(!isset($_SESSION['unlock'])){
+    if(!(isset($_POST['mdp']) && $_POST['mdp'] == 'gretcolmul68@')){
 
+        include_once("Vue/VueUnlock.html");
+        die();
+    }else if($_POST['mdp'] == 'gretcolmul68@'){
+        $_SESSION['unlock'] = true;
+        header("Location: ./?action=accueil");
+        die();
+    }
+}
 
     $racine = dirname(__FILE__);
 
