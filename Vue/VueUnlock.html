@@ -1,7 +1,7 @@
 <style>
 
     body{
-        background-color: red;
+        background-color: white;
         margin: 0;
         height: 100vh;
     }
@@ -19,10 +19,25 @@
         background-color:chartreuse;
 
     }
+    .nav{
+        display: flex;
+        justify-content: center;
+    }
+    @media(max-width: 1200px){
+        .center{
+
+            
+            font-size: 30px;
+        }
+    }
 
 </style>
 <body>
+
     <div class="center">
+            <div class="nav">
+        <img src="./img/logo.png" />
+    </div>
         <h1>Veuillez entrer le mot de passe :</h1>
         <div class="mdp">
             <form method="POST">

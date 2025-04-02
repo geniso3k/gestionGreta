@@ -11,7 +11,14 @@ body {
     background-color: #f9f9f9;
     color: #333;
     line-height: 1.6;
-    overflow-y:hidden;
+}
+@media(min-width: 1200px){
+    body{
+        overflow-y:hidden;
+    }
+    .equip{
+        overflow-y: auto;
+    }
 }
 
 /* Container */
@@ -34,7 +41,6 @@ body {
     width: 65%;
     max-height: 800px;
     padding-left: 15px;
-    overflow-y: auto;
 
 }
 
